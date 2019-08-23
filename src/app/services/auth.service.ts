@@ -7,7 +7,18 @@ export class AuthService {
 
   constructor() { }
 
-  logout(){
+  getToken() {
+    return localStorage.getItem('key');
+  }
+  public isAuthenticated(): boolean {
+    // get the token
+    const token = this.getToken();
+    if (token != null) {
+      return true;
+    }
+    return false;
+  }
+  logout() {
     localStorage.clear();
   }
 }

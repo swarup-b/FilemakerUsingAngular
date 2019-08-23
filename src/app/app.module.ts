@@ -1,7 +1,8 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule , HTTP_INTERCEPTORS} from '@angular/common/http';
+import { AuthService } from './services/auth.service'
 
 import {MatTableModule} from '@angular/material/table';
 import { AppRoutingModule } from './app-routing.module';
@@ -48,7 +49,7 @@ import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
     MatDatepickerModule,
     BsDatepickerModule.forRoot()
   ],
-  providers: [],
+  providers: [ ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

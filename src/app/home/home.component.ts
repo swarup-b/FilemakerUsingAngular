@@ -2,10 +2,12 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { LoginService } from '../services/login.service';
 import { Router } from '@angular/router';
 
+
 import { AuthService } from '../services/auth.service';
 import { MatTableDataSource, MatSort, MatPaginator } from '@angular/material';
 import { MatDialog , MatDialogConfig} from '@angular/material';
 import { NewContactComponent } from '../new-contact/new-contact.component';
+import { FormgroupContactsService } from '../services/formgroup-contacts.service'
 
 
 @Component({
@@ -18,14 +20,14 @@ export class HomeComponent implements OnInit {
   contacts: [];
   listData: MatTableDataSource<any>;
   displayedColumns = ['photo', 'id', 'title', 'fullname', 'email', 'phone', 'dob', 'Actions'];
-  private url = "http://localhost/EmployeeRegistration/public/contacts";
+  private url = "http://localhost/EmployeeRegistration/public/user/v1/contacts";
  
 
   constructor(
     private authService : AuthService,
     private service: LoginService, 
     private router: Router,
-     private auth: AuthService ,
+     private groupService: FormgroupContactsService ,
      private dialog :MatDialog
      ) { }
 
@@ -58,6 +60,16 @@ export class HomeComponent implements OnInit {
   }
 //Create new Contact
   onCreate(){
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+    dialogConfig.width = "60%";
+    this.dialog.open(NewContactComponent,dialogConfig);
+  }
+
+  //Edit Record
+  editRecord(row){
+    this.groupService.populateForm(row);
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;

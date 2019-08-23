@@ -16,11 +16,14 @@ export class LoginService {
   }
 
   getAllContacts(url) {
-    let headerdata = { header: this.header }
     return this.httpClient.get(url, { headers: this.header });
   }
-  deleteRecordById(recordId,url){
-    let newUrl=url + "id="+recordId;
+  deleteRecordById(recordId, url) {
+    let newUrl = url + "id=" + recordId;
     return this.httpClient.get(newUrl);
+  }
+
+  saveContacts(value, url) {
+    return this.httpClient.post(url, value,{ headers: this.header });
   }
 }

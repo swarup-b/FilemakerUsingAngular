@@ -3,7 +3,7 @@
         <h1 style="margin-left: 26%;">Crete New Contact</h1><br>
     </div>
     <form [formGroup]="newContact" (ngSubmit)="saveContact()">
-        <span> {{response}}</span>
+        <span> {{newContact.value | json}}</span>
         <div class="form-group row">
             <div class="col-4"> <label>Upload Photo</label></div>
             <div class="col-4"> <input type="file" formControlName="photo"></div>

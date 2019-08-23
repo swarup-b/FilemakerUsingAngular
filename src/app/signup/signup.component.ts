@@ -10,7 +10,7 @@ import { LoginService } from '../services/login.service';
 export class SignupComponent implements OnInit {
   signupForm : FormGroup;
   constructor(private fb: FormBuilder , private service : LoginService) { }
-  private url= "http://localhost/EmployeeRegistration/public/users";
+  private url= "http://localhost/EmployeeRegistration/public/user/v1/users";
   ngOnInit() {
     this.signupForm = this.fb.group({
       name: ['' , Validators.required],

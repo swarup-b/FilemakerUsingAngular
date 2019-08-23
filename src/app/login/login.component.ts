@@ -13,7 +13,7 @@ export class LoginComponent implements OnInit {
   loginForm: FormGroup;
   submitted = false;
   response: String;
-  private url = "http://localhost/EmployeeRegistration/public/loginUser";
+  private url = "http://localhost/EmployeeRegistration/public/user/v1/users/login";
   constructor(private fb: FormBuilder, private service: LoginService, private router: Router) { }
   
   ngOnInit() {
@@ -43,9 +43,9 @@ export class LoginComponent implements OnInit {
       }, // success path
       error => {
         if (error.status = 403) {
-          this.response = "Enter a proper email"
+          this.response = "Error Occurred"
         }
-        console.log(error.status);
+        console.log(error);
       } // error path
     );
 
