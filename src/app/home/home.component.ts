@@ -5,9 +5,10 @@ import { Router } from '@angular/router';
 
 import { AuthService } from '../services/auth.service';
 import { MatTableDataSource, MatSort, MatPaginator } from '@angular/material';
-import { MatDialog , MatDialogConfig} from '@angular/material';
+import { MatDialog, MatDialogConfig } from '@angular/material';
 import { NewContactComponent } from '../new-contact/new-contact.component';
-import { FormgroupContactsService } from '../services/formgroup-contacts.service'
+import { FormgroupContactsService } from '../services/formgroup-contacts.service';
+import { UpdateContactComponent } from '../update-contact/update-contact.component';
 
 
 @Component({
@@ -18,72 +19,80 @@ import { FormgroupContactsService } from '../services/formgroup-contacts.service
 
 export class HomeComponent implements OnInit {
   contacts: [];
+   message = '';
   listData: MatTableDataSource<any>;
-  displayedColumns = ['photo', 'id', 'title', 'fullname', 'email', 'phone', 'dob', 'Actions'];
-  private url = "http://localhost/EmployeeRegistration/public/user/v1/contacts";
- 
+  displayedColumns = ['id', 'title', 'fullname', 'email', 'phone', 'dob', 'Actions'];
+  private url = 'http://localhost/EmployeeRegistration/public/user/v1/contacts';
+
 
   constructor(
-    private authService : AuthService,
-    private service: LoginService, 
+    private authService: AuthService,
+    private service: LoginService,
     private router: Router,
-     private groupService: FormgroupContactsService ,
-     private dialog :MatDialog
-     ) { }
+    private groupService: FormgroupContactsService,
+    private dialog: MatDialog
+  ) { }
 
   @ViewChild(MatSort, { static: false }) sort: MatSort;
   @ViewChild(MatPaginator, { static: false }) paginator: MatPaginator;
 
   ngOnInit() {
-    
+
     if (localStorage.getItem('key') != null) {
 
-        this.service.getAllContacts(this.url).subscribe(
-                    data => {
-                      this.contacts = data as [];
-                      this.listData = new MatTableDataSource(this.contacts);
-                      this.listData.sort = this.sort;
-                      this.listData.paginator = this.paginator;
-                    },
-                    error => {
-                      if (error.status == 401) {
-                        this.router.navigate(['login']);
-                      }
-                      console.log(error);
-                    }
+      this.service.getAllContacts(this.url).subscribe(
+        data => {
+          this.contacts = data as [];
+          this.listData = new MatTableDataSource(this.contacts);
+          this.listData.sort = this.sort;
+          this.listData.paginator = this.paginator;
+        },
+        error => {
+          if (error.status === 401) {
+            this.router.navigate(['login']);
+          }
+          console.log(error);
+        }
       );
-    }
-    else {
+    } else {
       this.router.navigate(['login']);
     }
 
   }
-//Create new Contact
-  onCreate(){
+  // Create new Contact
+  onCreate() {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
-    dialogConfig.width = "60%";
-    this.dialog.open(NewContactComponent,dialogConfig);
+    dialogConfig.width = '60%';
+    this.dialog.open(NewContactComponent, dialogConfig);
   }
 
-  //Edit Record
-  editRecord(row){
+  // Edit Record
+  editRecord(row) {
     this.groupService.populateForm(row);
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
-    dialogConfig.width = "60%";
-    this.dialog.open(NewContactComponent,dialogConfig);
+    dialogConfig.width = '60%';
+    this.dialog.open(UpdateContactComponent, dialogConfig);
   }
-  //Logout User
-  logout(){
+  // Logout User
+  logout() {
     this.authService.logout();
     this.router.navigate(['login']);
 
   }
 
-  deleteRecord(recordId){
-    
+  deleteRecord(row) {
+    if (confirm( 'Are you sure to delete ' )) {
+      const url = 'http://localhost/EmployeeRegistration/public/user/v1/contacts';
+      this.service.deleteRecordById(row.recordId , url).subscribe(
+        data => {
+            console.log(data);
+        }
+      );
   }
+
+}
 }

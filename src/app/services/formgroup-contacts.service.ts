@@ -9,22 +9,20 @@ export class FormgroupContactsService {
   constructor(private fb: FormBuilder) { }
 
   form: FormGroup = this.fb.group({
-    photo: [''],
     fullname: [''],
     title: [''],
-    phone: [''],
     email: [''],
-    dob: ['']
+    phone: [''],
+    dob: [''],
+    recordId: ['']
   });
   populateForm(contacts) {
-    this.form.controls['fullname'].setValue(contacts.fullname);
-    this.form.controls['title'].setValue(contacts.title);
-    this.form.controls['phone'].setValue(contacts.phone);
-    this.form.controls['email'].setValue(contacts.email);
-    this.form.controls['dob'].setValue(contacts.dob);
- 
-
-
+    this.form.controls.fullname.setValue(contacts.fullname);
+    this.form.controls.title.setValue(contacts.title);
+    this.form.controls.phone.setValue(contacts.phone);
+    this.form.controls.email.setValue(contacts.email);
+    this.form.controls.dob.setValue(contacts.dob);
+    this.form.controls.recordId.setValue(contacts.recordId);
 
   }
 }

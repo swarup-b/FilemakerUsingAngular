@@ -8,12 +8,12 @@ import { NewContactComponent } from './new-contact/new-contact.component';
 
 
 const routes: Routes = [
-  {path : '' , component:LoginComponent},
+  {path : '' , component: LoginComponent},
   {path : 'login' , component : LoginComponent},
   {path : 'signup' , component : SignupComponent},
   {path : 'home' , component : HomeComponent},
   {path : 'new' , component : NewContactComponent},
-  {path : "**" ,component : PageNotFoundComponent}
+  {path : '**' , component : PageNotFoundComponent}
 ];
 
 @NgModule({

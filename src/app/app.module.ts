@@ -2,7 +2,6 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule , HTTP_INTERCEPTORS} from '@angular/common/http';
-import { AuthService } from './services/auth.service'
 
 import {MatTableModule} from '@angular/material/table';
 import { AppRoutingModule } from './app-routing.module';
@@ -22,7 +21,7 @@ import {MatDialogModule} from '@angular/material/dialog';
 import {MatButtonModule} from '@angular/material/button';
 import { NewContactComponent } from './new-contact/new-contact.component';
 import {MatDatepickerModule} from '@angular/material/datepicker';
-import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
+import { UpdateContactComponent } from './update-contact/update-contact.component';
 
 
 @NgModule({
@@ -32,7 +31,8 @@ import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
     PageNotFoundComponent,
     SignupComponent,
     HomeComponent,
-    NewContactComponent
+    NewContactComponent,
+    UpdateContactComponent
   ],
   imports: [
     BrowserModule,
@@ -46,10 +46,10 @@ import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
     MatSortModule,
     MatDialogModule,
     MatButtonModule,
-    MatDatepickerModule,
-    BsDatepickerModule.forRoot()
+    MatDatepickerModule
   ],
   providers: [ ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  entryComponents: [UpdateContactComponent]
 })
 export class AppModule { }

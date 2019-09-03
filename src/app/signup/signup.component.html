@@ -1,40 +1,39 @@
 <nav class="navbar">
 </nav>
-<div class="container">
-    <div class="form-div col-md-8">
-        <div class="container-fluid col-md-8 form-div-2">
-            <form [formGroup]="signupForm" (ngSubmit)="onSubmit()">
+<div class="form-div">
+    <div class="container-fluid form-div-2">
+        <h3>Register</h3>
+        <form [formGroup]="signupForm" (ngSubmit)="onSubmit()">
 
-                <div class="form-group row">
-                    <div class="col-md-4"> <label for="name">Enter Your Name</label></div>
-                    <div class="col-md-6"> <input id="name" type="text" class="form-control" formControlName="name"></div>
-                </div>
+            <div class="form-group row">
+                <div class="col-md-4"> <label for="name">Enter Your Name</label></div>
+                <div class="col-md-6"> <input id="name" type="text" class="form-control" formControlName="name"></div>
+            </div>
 
-                <div class="form-group row">
-                    <div class="col-md-4"> <label>Enter Your Email</label></div>
-                    <div class="col-md-6"> <input type="email" class="form-control" formControlName="email"></div>
-                </div>
+            <div class="form-group row">
+                <div class="col-md-4"> <label>Enter Your Email</label></div>
+                <div class="col-md-6"> <input type="email" class="form-control" formControlName="email"></div>
+            </div>
 
-                <div class="form-group row">
-                    <div class="col-md-4"> <label>Gender : </label></div>
-                    <div class="col-md-6"> <input type="radio" class="radio" formControlName="gender" value="male"> Male
-                        <input type="radio" class="radio" formControlName="gender" value="female"> Female
-                        <input type="radio" class="radio" formControlName="gender" value="others"> Others</div>
-                </div>
+            <div class="form-group row">
+                <div class="col-md-4"> <label>Gender : </label></div>
+                <div class="col-md-6"> <input type="radio" class="radio" formControlName="gender" value="male"> Male
+                    <input type="radio" class="radio" formControlName="gender" value="female"> Female
+                    <input type="radio" class="radio" formControlName="gender" value="others"> Others</div>
+            </div>
 
-                <div class="form-group row">
-                    <div class="col-md-4"> <label>Enter Password</label></div>
-                    <div class="col-md-6"> <input type="password" class="form-control" formControlName="password"></div>
-                </div>
+            <div class="form-group row">
+                <div class="col-md-4"> <label>Enter Password</label></div>
+                <div class="col-md-6"> <input type="password" class="form-control" formControlName="password"></div>
+            </div>
 
-                <div class="form-group row">
-                    <div class="col-md-4"> <label>Confirm Password</label></div>
-                    <div class="col-md-6"> <input type="password" class="form-control"></div>
-                </div>
-                <div class="btn-div">
-                    <button class="btn btn-primary">Register</button>
-                </div>
-            </form>
-        </div>
+            <div class="form-group row">
+                <div class="col-md-4"> <label>Confirm Password</label></div>
+                <div class="col-md-6"> <input type="password" class="form-control"></div>
+            </div>
+            <div class="btn-div">
+                <button class="btn btn-primary">Register</button>
+            </div>
+        </form>
     </div>
 </div>

@@ -13,10 +13,6 @@
                 <mat-header-cell *matHeaderCellDef mat-sort-header> ID</mat-header-cell>
                 <mat-cell *matCellDef="let contacts"> {{contacts.recordId}}</mat-cell>
             </ng-container>
-            <ng-container matColumnDef="photo">
-                <mat-header-cell *matHeaderCellDef> Photo</mat-header-cell>
-                <mat-cell *matCellDef="let contacts"></mat-cell>
-            </ng-container>
             <ng-container matColumnDef="fullname">
                 <mat-header-cell *matHeaderCellDef mat-sort-header> FullName </mat-header-cell>
                 <mat-cell *matCellDef="let contacts"> {{contacts.fullname}} </mat-cell>
@@ -41,7 +37,7 @@
                 <mat-header-cell *matHeaderCellDef> Actions</mat-header-cell>
                 <mat-cell *matCellDef="let row">
                     <button mat-icon-button (click)="editRecord(row)"><mat-icon>launch</mat-icon></button>
-                    <button mat-icon-button color="warn" (click)="deleteRecord(contacts.recordId,row)"><mat-icon>delete_outline</mat-icon></button>
+                    <button mat-icon-button color="warn" (click)="deleteRecord(row)"><mat-icon>delete_outline</mat-icon></button>
                 </mat-cell>
             </ng-container>
             <ng-container matColumnDef="loading">

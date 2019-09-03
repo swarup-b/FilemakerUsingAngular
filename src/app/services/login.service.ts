@@ -10,20 +10,35 @@ export class LoginService {
   header = this.headers.set('Authorization', localStorage.getItem('key'));
 
   constructor(private httpClient: HttpClient) { }
-
+// LoginUser
   loginUser(value, url): Observable<any> {
     return this.httpClient.post(url, value);
   }
-
-  getAllContacts(url) {
+ // Get all Contact
+  getAllContacts(url): Observable<any> {
     return this.httpClient.get(url, { headers: this.header });
   }
-  deleteRecordById(recordId, url) {
-    let newUrl = url + "id=" + recordId;
-    return this.httpClient.get(newUrl);
+
+  // Delete Contact
+  deleteRecordById(recordId, url): Observable<any> {
+    const newUrl = url + '/' + recordId;
+    return this.httpClient.delete(newUrl, { headers: this.header });
   }
 
-  saveContacts(value, url) {
-    return this.httpClient.post(url, value,{ headers: this.header });
+  // Create New Contact
+  saveContacts(value, url): Observable<any> {
+    return this.httpClient.post(url, value, { headers: this.header });
+  }
+
+  // Update Contact
+  updateContacts(value, url): Observable<any> {
+    const newUrl = url + '/' + value.recordId;
+    return this.httpClient.put(newUrl, value, { headers: this.header });
+  }
+
+  // Signup User
+
+  signup(url, value): Observable<any> {
+    return this.httpClient.post(url, value);
   }
 }
