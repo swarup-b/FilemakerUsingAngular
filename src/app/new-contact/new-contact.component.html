@@ -1,6 +1,7 @@
 <div class="container">
     <div>
-        <h1 style="margin-left: 26%;">Crete New Contact</h1><br>
+        <h3 style="margin-left: 30%;">Crete New Contact</h3><br>
+        <span>{{message}}</span>
     </div>
     <form [formGroup]="newContact" (ngSubmit)="saveContact()">
 
@@ -28,7 +29,6 @@
         <div class="btn-div">
             <button class="btn btn-secondary" (click)="onclose()">Cancel</button>
             <button class="btn btn-success" id="create">Create</button>
-            <button class="btn btn-success" style="display:none;" id="update">Update</button>
         </div>
     </form>
 </div>

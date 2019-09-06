@@ -1,27 +1,23 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
-import { HttpClientModule , HTTP_INTERCEPTORS} from '@angular/common/http';
+import { HttpClientModule} from '@angular/common/http';
 
-import {MatTableModule} from '@angular/material/table';
+
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
+import { FlexLayoutModule } from '@angular/flex-layout';
 
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { SignupComponent } from './signup/signup.component';
 import { HomeComponent } from './home/home.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
-import {MatIconModule} from '@angular/material/icon';
-import {MatPaginatorModule} from '@angular/material/paginator';
-import {MatSortModule} from '@angular/material/sort';
-import {MatDialogModule} from '@angular/material/dialog';
-
-import {MatButtonModule} from '@angular/material/button';
+import { AppMaterialModule } from './app-material/app-material.module';
 import { NewContactComponent } from './new-contact/new-contact.component';
-import {MatDatepickerModule} from '@angular/material/datepicker';
 import { UpdateContactComponent } from './update-contact/update-contact.component';
+import { TestComponent } from './test/test.component';
 
 
 @NgModule({
@@ -32,7 +28,8 @@ import { UpdateContactComponent } from './update-contact/update-contact.componen
     SignupComponent,
     HomeComponent,
     NewContactComponent,
-    UpdateContactComponent
+    UpdateContactComponent,
+    TestComponent
   ],
   imports: [
     BrowserModule,
@@ -40,16 +37,11 @@ import { UpdateContactComponent } from './update-contact/update-contact.componen
     ReactiveFormsModule,
     HttpClientModule,
     BrowserAnimationsModule,
-    MatTableModule,
-    MatIconModule,
-    MatPaginatorModule,
-    MatSortModule,
-    MatDialogModule,
-    MatButtonModule,
-    MatDatepickerModule
+    AppMaterialModule,
+    FlexLayoutModule
   ],
   providers: [ ],
   bootstrap: [AppComponent],
-  entryComponents: [UpdateContactComponent]
+  entryComponents: [NewContactComponent]
 })
 export class AppModule { }

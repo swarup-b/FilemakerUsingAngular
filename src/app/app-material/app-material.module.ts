@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {MatIconModule} from '@angular/material/icon';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 
 import {MatPaginatorModule} from '@angular/material/paginator';
 import {MatSortModule} from '@angular/material/sort';
@@ -24,7 +25,8 @@ import {MatTableModule} from '@angular/material/table';
     MatButtonModule,
     MatDatepickerModule,
     BsDatepickerModule.forRoot(),
-    MatTableModule
+    MatTableModule,
+    MatProgressSpinnerModule
   ],
   exports: [
     MatIconModule,
@@ -34,7 +36,8 @@ import {MatTableModule} from '@angular/material/table';
     MatButtonModule,
     MatDatepickerModule,
     BsDatepickerModule,
-    MatTableModule
+    MatTableModule,
+    MatProgressSpinnerModule
   ]
 })
 export class AppMaterialModule { }

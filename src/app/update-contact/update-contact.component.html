@@ -3,6 +3,7 @@
         <h1 style="margin-left: 26%;">Update Contact</h1><br>
     </div>
     <form [formGroup]="updateContact" (ngSubmit)="update()">
+
         <input type="hidden" formControlName="recordId">
         <div class="form-group row">
             <div class="col-4"> <label>Full Name</label></div>

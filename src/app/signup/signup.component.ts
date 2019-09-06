@@ -15,15 +15,14 @@ export class SignupComponent implements OnInit {
     this.signupForm = this.fb.group({
       name: ['', Validators.required],
       email: [''],
-      password: [''],
-      gender: ['']
+      password: ['', Validators.required],
+      gender: ['', Validators.required]
     });
   }
 
   onSubmit() {
     this.service.signup(this.signupForm.value, this.url).subscribe(
-      data => { console.log(data); }, // success path
-      error => { console.log(error); } // error path
+      data => { }
     );
 
   }

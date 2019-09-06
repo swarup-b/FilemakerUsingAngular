@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { LoginService } from '../services/login.service';
 import { MatDialogRef } from '@angular/material';
 import { FormGroup, FormBuilder } from '@angular/forms';
-import { FormgroupContactsService } from '../services/formgroup-contacts.service'
+import { FormgroupContactsService } from '../services/formgroup-contacts.service';
 
 @Component({
   selector: 'app-update-contact',
@@ -11,6 +11,7 @@ import { FormgroupContactsService } from '../services/formgroup-contacts.service
 })
 export class UpdateContactComponent implements OnInit {
   updateContact: FormGroup;
+  message: string;
   private url = 'http://localhost/EmployeeRegistration/public/user/v1/contacts';
   constructor(private fb: FormBuilder,
               private service: LoginService,
@@ -22,7 +23,7 @@ export class UpdateContactComponent implements OnInit {
   ngOnInit() {
     this.updateContact = this.contactService.form;
   }
-  onclose() {
+  close() {
     this.updateContact.reset();
     this.matDialogRef.close();
   }
@@ -30,7 +31,10 @@ export class UpdateContactComponent implements OnInit {
   update() {
     this.service.updateContacts(this.updateContact.value, this.url).subscribe(
       response => {
-       console.log(response);
+       this.message = response.data;
+      },
+      error => {
+        console.log(error);
       }
     );
 

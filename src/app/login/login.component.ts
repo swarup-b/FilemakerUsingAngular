@@ -12,14 +12,14 @@ import { Router } from '@angular/router'
 export class LoginComponent implements OnInit {
   loginForm: FormGroup;
   submitted = false;
-  response: String;
-  private url = "http://localhost/EmployeeRegistration/public/user/v1/users/login";
+  response: string;
+  private url = 'http://localhost/EmployeeRegistration/public/user/v1/users/login';
   constructor(private fb: FormBuilder, private service: LoginService, private router: Router) { }
-  
+
   ngOnInit() {
     this.loginForm = this.fb.group({
-      email: ['',[Validators.required, Validators.email]],
-      password: ['',[Validators.required, Validators.minLength(6)]]
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', [Validators.required, Validators.minLength(6)]]
     });
 
   }
@@ -27,23 +27,23 @@ export class LoginComponent implements OnInit {
 
   onSubmit() {
     this.submitted = true;
-        // stop here if form is invalid
-        if (this.loginForm.invalid) {
-            return;
-        }
+    // stop here if form is invalid
+    if (this.loginForm.invalid) {
+      return;
+    }
     this.service.loginUser(this.loginForm.value, this.url).subscribe(
       data => {
-        if (data.error == 'Invalid email or password') {
-          this.response = "Invalid email or password"
+        if (data.error === 'Invalid email or password') {
+          this.response = 'Invalid email or password';
         } else {
-          this.response = "";
+          this.response = '';
           localStorage.setItem('key', data.token);
           this.router.navigate(['/home']);
         }
       }, // success path
       error => {
-        if (error.status = 403) {
-          this.response = "Error Occurred"
+        if (error.status === 403) {
+          this.response = 'Error Occurred';
         }
         console.log(error);
       } // error path

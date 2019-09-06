@@ -4,7 +4,8 @@ import { LoginComponent } from './login/login.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { SignupComponent } from './signup/signup.component';
 import { HomeComponent } from './home/home.component';
-import { NewContactComponent } from './new-contact/new-contact.component';
+import { TestComponent } from './test/test.component';
+
 
 
 const routes: Routes = [
@@ -12,7 +13,7 @@ const routes: Routes = [
   {path : 'login' , component : LoginComponent},
   {path : 'signup' , component : SignupComponent},
   {path : 'home' , component : HomeComponent},
-  {path : 'new' , component : NewContactComponent},
+  {path : 'new' , component : TestComponent},
   {path : '**' , component : PageNotFoundComponent}
 ];
 

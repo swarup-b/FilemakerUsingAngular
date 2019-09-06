@@ -1,14 +1,15 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { LoginService } from '../services/login.service';
 import { Router } from '@angular/router';
-
-
 import { AuthService } from '../services/auth.service';
+
 import { MatTableDataSource, MatSort, MatPaginator } from '@angular/material';
 import { MatDialog, MatDialogConfig } from '@angular/material';
 import { NewContactComponent } from '../new-contact/new-contact.component';
 import { FormgroupContactsService } from '../services/formgroup-contacts.service';
-import { UpdateContactComponent } from '../update-contact/update-contact.component';
+
+import { MatTableService } from '../services/mat-table.service';
+import { FormGroup } from '@angular/forms';
 
 
 @Component({
@@ -18,8 +19,11 @@ import { UpdateContactComponent } from '../update-contact/update-contact.compone
 })
 
 export class HomeComponent implements OnInit {
+  value = '60%';
+  divProerty: boolean;
   contacts: [];
-   message = '';
+  editForm: FormGroup;
+  message = '';
   listData: MatTableDataSource<any>;
   displayedColumns = ['id', 'title', 'fullname', 'email', 'phone', 'dob', 'Actions'];
   private url = 'http://localhost/EmployeeRegistration/public/user/v1/contacts';
@@ -30,33 +34,25 @@ export class HomeComponent implements OnInit {
     private service: LoginService,
     private router: Router,
     private groupService: FormgroupContactsService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private matservice: MatTableService
   ) { }
 
   @ViewChild(MatSort, { static: false }) sort: MatSort;
   @ViewChild(MatPaginator, { static: false }) paginator: MatPaginator;
 
   ngOnInit() {
-
+    this.divProerty = false;
     if (localStorage.getItem('key') != null) {
-
-      this.service.getAllContacts(this.url).subscribe(
-        data => {
-          this.contacts = data as [];
-          this.listData = new MatTableDataSource(this.contacts);
-          this.listData.sort = this.sort;
-          this.listData.paginator = this.paginator;
-        },
-        error => {
-          if (error.status === 401) {
-            this.router.navigate(['login']);
-          }
-          console.log(error);
-        }
-      );
+      this.getAllContactDetails();
+      this.editForm = this.groupService.form;
     } else {
       this.router.navigate(['login']);
     }
+    this.matservice.contactlist.subscribe(response => {
+      if (response) { this.getAllContactDetails(); }
+    });
+
 
   }
   // Create new Contact
@@ -70,12 +66,8 @@ export class HomeComponent implements OnInit {
 
   // Edit Record
   editRecord(row) {
+    this.divProerty = true;
     this.groupService.populateForm(row);
-    const dialogConfig = new MatDialogConfig();
-    dialogConfig.disableClose = true;
-    dialogConfig.autoFocus = true;
-    dialogConfig.width = '60%';
-    this.dialog.open(UpdateContactComponent, dialogConfig);
   }
   // Logout User
   logout() {
@@ -83,16 +75,51 @@ export class HomeComponent implements OnInit {
     this.router.navigate(['login']);
 
   }
-
+  // Delete Record
   deleteRecord(row) {
-    if (confirm( 'Are you sure to delete ' )) {
-      const url = 'http://localhost/EmployeeRegistration/public/user/v1/contacts';
-      this.service.deleteRecordById(row.recordId , url).subscribe(
+    if (confirm('Are you sure to delete ')) {
+      this.service.deleteRecordById(row.recordId, this.url).subscribe(
         data => {
-            console.log(data);
+          this.message = data.message;
+          this.getAllContactDetails();
         }
       );
+    }
   }
+  // Get all Contact Informations
+  getAllContactDetails() {
+    this.service.getAllContacts(this.url).subscribe(
+      data => {
+        // this.matservice.contactlist.next(data as []);
+        this.contacts = data as [];
+        this.listData = new MatTableDataSource(this.contacts);
+        this.listData.sort = this.sort;
+        this.listData.paginator = this.paginator;
+      },
+      error => {
+        if (error.status === 401) {
+          this.router.navigate(['login']);
+        }
+        console.log(error);
+      }
+    );
+  }
+  // Update Table Record
+  update() {
+    this.service.updateContacts(this.editForm.value, this.url).subscribe(
+      response => {
+        this.message = response.data;
+        this.getAllContactDetails();
+        this.onClose();
+      },
+      error => {
+        console.log(error);
+      }
+    );
 
-}
+  }
+  // Close Edit Division
+  onClose() {
+    this.divProerty = false;
+  }
 }
