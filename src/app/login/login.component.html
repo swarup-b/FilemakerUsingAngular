@@ -4,7 +4,6 @@
     <div class="form-div col-md-8">
         <div class="container-fluid col-md-8 form-div-2">
             <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
-                <span> {{response}}</span>
                 <div class="form-group row">
                     <div class="col-md-4"> <label>Enter Your Email</label></div>
                     <div class="col-md-6"> <input type="email" class="form-control" formControlName="email" [ngClass]="{ 'is-invalid': f.email.invalid && (f.email.dirty || f.email.touched) }">
@@ -33,4 +32,5 @@
             </form>
         </div>
     </div>
+    <button mat-button (click)="openDialog()">Confirm box</button>
 </div>

@@ -10,6 +10,8 @@ import { FormgroupContactsService } from '../services/formgroup-contacts.service
 
 import { MatTableService } from '../services/mat-table.service';
 import { FormGroup } from '@angular/forms';
+import { ToastrService } from 'ngx-toastr';
+import { ConfirmationDialogComponent } from '../shared/confirmation-dialog/confirmation-dialog.component';
 
 
 @Component({
@@ -21,9 +23,9 @@ import { FormGroup } from '@angular/forms';
 export class HomeComponent implements OnInit {
   value = '60%';
   divProerty: boolean;
+  confirmBox = false;
   contacts: [];
   editForm: FormGroup;
-  message = '';
   listData: MatTableDataSource<any>;
   displayedColumns = ['id', 'title', 'fullname', 'email', 'phone', 'dob', 'Actions'];
   private url = 'http://localhost/EmployeeRegistration/public/user/v1/contacts';
@@ -35,7 +37,8 @@ export class HomeComponent implements OnInit {
     private router: Router,
     private groupService: FormgroupContactsService,
     private dialog: MatDialog,
-    private matservice: MatTableService
+    private matservice: MatTableService,
+    private tosterService: ToastrService
   ) { }
 
   @ViewChild(MatSort, { static: false }) sort: MatSort;
@@ -73,18 +76,20 @@ export class HomeComponent implements OnInit {
   logout() {
     this.authService.logout();
     this.router.navigate(['login']);
-
+    this.tosterService.success('Logged Out..!');
   }
   // Delete Record
   deleteRecord(row) {
-    if (confirm('Are you sure to delete ')) {
+    this.openDialog('Are You Sure To Delete this record.');
+    if (this.confirmBox) {
       this.service.deleteRecordById(row.recordId, this.url).subscribe(
         data => {
-          this.message = data.message;
           this.getAllContactDetails();
+          this.tosterService.info('Deleted Successfully..');
         }
       );
     }
+    this.confirmBox = false;
   }
   // Get all Contact Informations
   getAllContactDetails() {
@@ -106,11 +111,12 @@ export class HomeComponent implements OnInit {
   }
   // Update Table Record
   update() {
+    // console.log(this.editForm.value);
     this.service.updateContacts(this.editForm.value, this.url).subscribe(
       response => {
-        this.message = response.data;
         this.getAllContactDetails();
         this.onClose();
+        this.tosterService.success('Updated Successfully..');
       },
       error => {
         console.log(error);
@@ -120,6 +126,29 @@ export class HomeComponent implements OnInit {
   }
   // Close Edit Division
   onClose() {
-    this.divProerty = false;
+    if (this.editForm.dirty) {
+      this.openDialog('Save Details.');
+      if (this.confirmBox) {
+        this.update();
+      } else {
+        this.divProerty = false;
+      }
+    } else {
+      this.divProerty = false;
+    }
+    this.confirmBox=false;
   }
+
+  openDialog(message): void {
+    const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+      width: '350px',
+      data: message
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.confirmBox = true;
+      }
+    });
+  }
+
 }

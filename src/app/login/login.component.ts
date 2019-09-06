@@ -1,7 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators, FormGroup, FormControl } from '@angular/forms';
 import { LoginService } from '../services/login.service';
-import { Router } from '@angular/router'
+import { Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
+import { MatDialog } from '@angular/material';
+import { ConfirmationDialogComponent } from '../shared/confirmation-dialog/confirmation-dialog.component';
 
 
 @Component({
@@ -14,7 +17,12 @@ export class LoginComponent implements OnInit {
   submitted = false;
   response: string;
   private url = 'http://localhost/EmployeeRegistration/public/user/v1/users/login';
-  constructor(private fb: FormBuilder, private service: LoginService, private router: Router) { }
+  constructor(
+    private fb: FormBuilder,
+    private service: LoginService,
+    private router: Router,
+    private toasterService: ToastrService,
+    public dialog: MatDialog) { }
 
   ngOnInit() {
     this.loginForm = this.fb.group({
@@ -34,7 +42,7 @@ export class LoginComponent implements OnInit {
     this.service.loginUser(this.loginForm.value, this.url).subscribe(
       data => {
         if (data.error === 'Invalid email or password') {
-          this.response = 'Invalid email or password';
+          this.toasterService.error('Invalid email or password');
         } else {
           this.response = '';
           localStorage.setItem('key', data.token);
@@ -49,6 +57,19 @@ export class LoginComponent implements OnInit {
       } // error path
     );
 
+  }
+
+  openDialog(): void {
+    const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+      width: '350px',
+      data: 'Do you confirm the deletion of this data?'
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        console.log('Yes clicked');
+        // DO SOMETHING
+      }
+    });
   }
 
 }

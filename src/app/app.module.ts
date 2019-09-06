@@ -2,6 +2,8 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule} from '@angular/common/http';
+import { ToastrModule } from 'ngx-toastr';
+
 
 
 import { AppRoutingModule } from './app-routing.module';
@@ -18,6 +20,7 @@ import { AppMaterialModule } from './app-material/app-material.module';
 import { NewContactComponent } from './new-contact/new-contact.component';
 import { UpdateContactComponent } from './update-contact/update-contact.component';
 import { TestComponent } from './test/test.component';
+import { ConfirmationDialogComponent } from './shared/confirmation-dialog/confirmation-dialog.component';
 
 
 @NgModule({
@@ -29,7 +32,8 @@ import { TestComponent } from './test/test.component';
     HomeComponent,
     NewContactComponent,
     UpdateContactComponent,
-    TestComponent
+    TestComponent,
+    ConfirmationDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -38,10 +42,18 @@ import { TestComponent } from './test/test.component';
     HttpClientModule,
     BrowserAnimationsModule,
     AppMaterialModule,
-    FlexLayoutModule
+    FlexLayoutModule,
+    ToastrModule.forRoot({
+      timeOut: 5000,
+      positionClass: 'toast-top-right',
+      preventDuplicates: true,
+    })
   ],
   providers: [ ],
   bootstrap: [AppComponent],
-  entryComponents: [NewContactComponent]
+  entryComponents: [
+    NewContactComponent,
+    ConfirmationDialogComponent
+  ]
 })
 export class AppModule { }
