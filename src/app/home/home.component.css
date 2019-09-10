@@ -62,3 +62,17 @@ body {
 .logout-btn {
     margin-left: 90%;
 }
+
+.material-spinner {
+    margin-left: 561px;
+}
+
+.mat-progress-spinner circle,
+.mat-spinner circle {
+    stroke: red;
+}
+
+h1 {
+    font-family: initial;
+    color: white;
+}

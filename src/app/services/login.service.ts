@@ -41,4 +41,7 @@ export class LoginService {
   signup(url, value): Observable<any> {
     return this.httpClient.post(url, value);
   }
+  getRecordNo(url): Observable<any> {
+    return this.httpClient.get(url, { headers: this.header });
+  }
 }

@@ -3,7 +3,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { LoginService } from '../services/login.service';
 import { MatDialogRef } from '@angular/material';
 import { MatTableService } from '../services/mat-table.service';
-import { NUMBER_TYPE } from '@angular/compiler/src/output/output_ast';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-new-contact',
@@ -13,11 +13,14 @@ import { NUMBER_TYPE } from '@angular/compiler/src/output/output_ast';
 export class NewContactComponent implements OnInit {
   newContact: FormGroup;
   message: string;
+  isSubmitted = false;
   private url = 'http://localhost/EmployeeRegistration/public/user/v1/contacts';
-  constructor(private fb: FormBuilder,
+  constructor(
+    private fb: FormBuilder,
     private service: LoginService,
     private matDialogRef: MatDialogRef<NewContactComponent>,
-    private matService: MatTableService
+    private matService: MatTableService,
+    private tosterService: ToastrService
   ) { }
 
   ngOnInit() {
@@ -27,14 +30,11 @@ export class NewContactComponent implements OnInit {
       title: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
       phone: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(10)]],
-      dob: ['', Validators.required]
+      dob: ['']
     });
   }
 
   saveContact() {
-    if (this.newContact.invalid) {
-      return;
-    }
     this.service.saveContacts(this.newContact.value, this.url).subscribe(
       response => {
         if (response.data === 'Successful') {
@@ -42,6 +42,7 @@ export class NewContactComponent implements OnInit {
           this.newContact.reset();
           this.matDialogRef.close();
           this.matService.contactlist.next(true);
+          this.tosterService.success('Created Successfully..');
         } else {
           this.message = 'An error Occured';
         }
@@ -57,5 +58,5 @@ export class NewContactComponent implements OnInit {
     this.newContact.reset();
     this.matDialogRef.close();
   }
-
+  get f() { return this.newContact.controls; }
 }

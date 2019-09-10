@@ -18,7 +18,6 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { AppMaterialModule } from './app-material/app-material.module';
 import { NewContactComponent } from './new-contact/new-contact.component';
-import { UpdateContactComponent } from './update-contact/update-contact.component';
 import { TestComponent } from './test/test.component';
 import { ConfirmationDialogComponent } from './shared/confirmation-dialog/confirmation-dialog.component';
 
@@ -31,7 +30,6 @@ import { ConfirmationDialogComponent } from './shared/confirmation-dialog/confir
     SignupComponent,
     HomeComponent,
     NewContactComponent,
-    UpdateContactComponent,
     TestComponent,
     ConfirmationDialogComponent
   ],

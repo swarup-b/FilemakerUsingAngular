@@ -7,24 +7,42 @@
 
             <div class="form-group row">
                 <div class="col-md-4"> <label for="name">Enter Your Name</label></div>
-                <div class="col-md-6"> <input id="name" type="text" class="form-control" formControlName="name"></div>
+                <div class="col-md-6"> <input id="name" type="text" class="form-control" formControlName="name" [ngClass]="{ 'is-invalid': f.name.invalid && (f.name.dirty || f.name.touched || isSubmitted) }">
+                    <div *ngIf="f.name.invalid && (f.name.dirty || f.name.touched || isSubmitted)" class="invalid-feedback d-block">
+                        <div *ngIf="f.name.errors.required">name is required</div>
+                    </div>
+                </div>
             </div>
 
             <div class="form-group row">
                 <div class="col-md-4"> <label>Enter Your Email</label></div>
-                <div class="col-md-6"> <input type="email" class="form-control" formControlName="email"></div>
+                <div class="col-md-6"> <input type="email" class="form-control" formControlName="email" [ngClass]="{ 'is-invalid': f.email.invalid && (f.email.dirty || f.email.touched || isSubmitted) }">
+                    <div *ngIf="f.email.invalid && (f.email.dirty || f.email.touched || isSubmitted)" class="invalid-feedback d-block">
+                        <div *ngIf="f.email.errors.required">email is required</div>
+                        <div *ngIf="f.email.errors.email">please enter a valid email</div>
+                    </div>
+                </div>
             </div>
 
             <div class="form-group row">
                 <div class="col-md-4"> <label>Gender : </label></div>
-                <div class="col-md-6"> <input type="radio" class="radio" formControlName="gender" value="male"> Male
+                <div class="col-md-6"> <input type="radio" class="radio" formControlName="gender" value="male" [ngClass]="{ 'is-invalid': f.gender.invalid && isSubmitted }"> Male
                     <input type="radio" class="radio" formControlName="gender" value="female"> Female
-                    <input type="radio" class="radio" formControlName="gender" value="others"> Others</div>
+                    <input type="radio" class="radio" formControlName="gender" value="others"> Others
+                    <div *ngIf="f.gender.invalid && isSubmitted" class="invalid-feedback d-block">
+                        <div *ngIf="f.gender.errors.required">gender is required</div>
+                    </div>
+                </div>
             </div>
 
             <div class="form-group row">
                 <div class="col-md-4"> <label>Enter Password</label></div>
-                <div class="col-md-6"> <input type="password" class="form-control" formControlName="password"></div>
+                <div class="col-md-6"> <input type="password" class="form-control" formControlName="password" [ngClass]="{ 'is-invalid': f.password.invalid && (f.password.dirty || f.password.touched || isSubmitted) }">
+                    <div *ngIf="f.password.invalid && (f.password.dirty || f.password.touched || isSubmitted)" class="invalid-feedback d-block">
+                        <div *ngIf="f.password.errors.required">Password is required</div>
+                        <div *ngIf="f.password.errors.minlength">Password must be at least 6 characters</div>
+                    </div>
+                </div>
             </div>
 
             <div class="form-group row">
