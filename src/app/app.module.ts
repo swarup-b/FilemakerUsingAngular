@@ -1,7 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
-import { HttpClientModule} from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS} from '@angular/common/http';
 import { ToastrModule } from 'ngx-toastr';
 
 
@@ -20,6 +20,9 @@ import { AppMaterialModule } from './app-material/app-material.module';
 import { NewContactComponent } from './new-contact/new-contact.component';
 import { TestComponent } from './test/test.component';
 import { ConfirmationDialogComponent } from './shared/confirmation-dialog/confirmation-dialog.component';
+import { AuthGuard } from './auth/auth.guard';
+import { CanDeactivateGuardService } from './auth/can-deactivate-guard.service';
+import { UserInterceptorService } from './auth/user-interceptor.service';
 
 
 @NgModule({
@@ -47,11 +50,18 @@ import { ConfirmationDialogComponent } from './shared/confirmation-dialog/confir
       preventDuplicates: true,
     })
   ],
-  providers: [ ],
+  providers: [ AuthGuard ,
+    CanDeactivateGuardService,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: UserInterceptorService,
+      multi: true
+    }
+  ],
   bootstrap: [AppComponent],
   entryComponents: [
     NewContactComponent,
     ConfirmationDialogComponent
   ]
 })
-export class AppModule { }
+export class AppModule {}

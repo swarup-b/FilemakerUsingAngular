@@ -1,22 +1,19 @@
 import { Injectable } from '@angular/core';
 
+
+
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-
+  isValid: boolean;
   constructor() { }
 
   getToken() {
-    return localStorage.getItem('key');
+    return localStorage.getItem('token');
   }
   public isAuthenticated(): boolean {
-    // get the token
-    const token = this.getToken();
-    if (token != null) {
-      return true;
-    }
-    return false;
+    return !!localStorage.getItem('token');
   }
   logout() {
     localStorage.clear();

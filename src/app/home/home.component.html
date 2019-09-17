@@ -1,5 +1,8 @@
 <nav class="navbar">
     <h1></h1>
+    <input type="button" value="NewComponent" class="btn-success" [routerLink]="[ '/new' ]" style="
+    position: absolute;
+">
     <input type="button" value="Logout" class="btn btn-danger logout-btn" style="float: right;" (click)="logout()">
 </nav>
 <div class="main-div">
@@ -66,23 +69,37 @@
                     <input type="hidden" formControlName="recordId">
                     <div class="form-group row">
                         <div class="col-4"> <label>Full Name</label></div>
-                        <div class="col-8"> <input type="text" class="form-control" formControlName="fullname"></div>
+                        <div class="col-8"> <input type="text" class="form-control" formControlName="fullname" [ngClass]="{ 'is-invalid': f.fullname.invalid && (f.fullname.dirty || isSubmitted)}">
+                            <div *ngIf="f.fullname.invalid && (f.fullname.dirty || isSubmitted)" class="invalid-feedback d-block">
+                                <div *ngIf="f.fullname.errors.required">title is required</div>
+                            </div>
+                        </div>
                     </div>
                     <div class="form-group row">
                         <div class="col-4"> <label>Enter Title</label></div>
-                        <div class="col-8"> <input type="text" class="form-control" formControlName="title"></div>
+                        <div class="col-8"> <input type="text" class="form-control" formControlName="title" [ngClass]="{ 'is-invalid': f.title.invalid && (f.title.dirty || isSubmitted)}">
+                            <div *ngIf="f.title.invalid && (f.title.dirty || isSubmitted)" class="invalid-feedback d-block">
+                                <div *ngIf="f.title.errors.required">title is required</div>
+                            </div>
+                        </div>
                     </div>
                     <div class="form-group row">
                         <div class="col-4"> <label>Enter Email</label></div>
-                        <div class="col-8"> <input type="email" class="form-control" formControlName="email"></div>
+                        <div class="col-8"> <input type="email" class="form-control" formControlName="email" [ngClass]="{ 'is-invalid': f.email.invalid && (f.email.dirty || isSubmitted)}">
+                            <div *ngIf="f.email.invalid && (f.email.dirty || isSubmitted)" class="invalid-feedback d-block">
+                                <div *ngIf="f.email.errors.required">email is required</div>
+                                <div *ngIf="f.email.errors.email">Enter A valid email</div>
+                            </div>
+                        </div>
                     </div>
                     <div class="form-group row">
                         <div class="col-4"> <label>Enter Phone</label></div>
                         <div class="col-8">
-                            <input type="text" pattern="[0-9]*" class="form-control" formControlName="phone" [ngClass]="{ 'is-invalid': f.phone.invalid && (f.phone.dirty || isSubmitted)}">
+                            <input type="text" (keypress)="keyPress($event)" class="form-control" formControlName="phone" [ngClass]="{ 'is-invalid': f.phone.invalid && (f.phone.dirty || isSubmitted)}">
                             <div *ngIf="f.phone.invalid && (f.phone.dirty || isSubmitted)" class="invalid-feedback d-block">
                                 <div *ngIf="f.phone.errors.required">phone is required</div>
-                                <div *ngIf="f.phone.errors.minlength">phone must be at least 6 characters</div>
+                                <div *ngIf="f.phone.errors.minlength">phone must be 10 digit</div>
+                                <div *ngIf="f.phone.errors.maxlength">phone must be 10 digit</div>
                             </div>
                         </div>
                     </div>

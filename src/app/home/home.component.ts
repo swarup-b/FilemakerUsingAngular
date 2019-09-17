@@ -9,7 +9,7 @@ import { NewContactComponent } from '../new-contact/new-contact.component';
 import { FormgroupContactsService } from '../services/formgroup-contacts.service';
 
 import { MatTableService } from '../services/mat-table.service';
-import { FormGroup } from '@angular/forms';
+import { FormGroup, FormControl } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { ConfirmationDialogComponent } from '../shared/confirmation-dialog/confirmation-dialog.component';
 import { tap } from 'rxjs/operators';
@@ -23,10 +23,11 @@ import { startWith } from 'rxjs/operators';
 })
 
 export class HomeComponent implements OnInit, AfterViewInit {
+  // @ViewChild('editForm', { static: false }) public editFormData: FormControl;
   // Variable declared
   value = '60%';
   divProerty: boolean;
-  confirmBox = false;
+  confirmBox: boolean;
   contacts: [];
   editForm: FormGroup;
   listData: MatTableDataSource<any>;
@@ -34,6 +35,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
   isSubmitted = false;
   displayedColumns = ['id', 'title', 'fullname', 'email', 'phone', 'dob', 'Actions'];
   private url = 'http://localhost/EmployeeRegistration/public/user/v1/contacts';
+  canDeactivate: any;
 
   // Constructor
   constructor(
@@ -45,19 +47,16 @@ export class HomeComponent implements OnInit, AfterViewInit {
     private matservice: MatTableService,
     private tosterService: ToastrService
   ) { }
-
   @ViewChild(MatSort, { static: false }) sort: MatSort;
   @ViewChild(MatPaginator, { static: false }) paginator: MatPaginator;
   // Init method
   ngOnInit() {
     this.divProerty = false;
-    if (localStorage.getItem('key') != null) {
-      this.editForm = this.groupService.form;
-    } else {
-      this.router.navigate(['login']);
-    }
+    this.editForm = this.groupService.form;
     this.matservice.contactlist.subscribe(response => {
-      if (response) { this.getAllContactDetails(this.paginator.pageIndex, this.paginator.pageSize); }
+      if (response) {
+        this.getAllContactDetails(this.paginator.pageIndex, this.paginator.pageSize);
+      }
     });
 
 
@@ -65,10 +64,6 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
   // Lifecycle Method AfterViewInit
   ngAfterViewInit() {
-    const recordUrl = 'http://localhost/EmployeeRegistration/public/user/v1/totalRecord';
-    this.service.getRecordNo(recordUrl).subscribe(
-      data => { this.totalRecord = data.count; }
-    );
     this.paginator.page.pipe(
       startWith(null),
       tap(() => this.getAllContactDetails(this.paginator.pageIndex, this.paginator.pageSize))
@@ -101,11 +96,16 @@ export class HomeComponent implements OnInit, AfterViewInit {
   // Delete Record
   deleteRecord(row) {
     this.openDialog('Are You Sure To Delete this record.');
+    console.log(this.confirmBox);
     if (this.confirmBox) {
       this.service.deleteRecordById(row.recordId, this.url).subscribe(
         data => {
+          console.log(data);
           this.getAllContactDetails(this.paginator.pageIndex, this.paginator.pageSize);
           this.tosterService.info('Deleted Successfully..');
+        },
+        error => {
+          console.log(error);
         }
       );
     }
@@ -117,8 +117,9 @@ export class HomeComponent implements OnInit, AfterViewInit {
     const newIndex = index * size;
     const newUrl = 'http://localhost/EmployeeRegistration/public/user/v1/report?start=' + newIndex + '&range=' + size;
     this.service.getAllContacts(newUrl).subscribe(
-      data => {
-        this.contacts = data;
+      (response) => {
+        this.totalRecord = response.headers.get('records');
+        this.contacts = response.body;
         this.listData = new MatTableDataSource(this.contacts);
         this.listData.sort = this.sort;
       },
@@ -146,7 +147,8 @@ export class HomeComponent implements OnInit, AfterViewInit {
         console.log(error);
       }
     );
-
+    this.editForm.reset();
+    this.onClose();
   }
 
   // Close Edit Division
@@ -162,6 +164,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
       this.divProerty = false;
     }
     this.confirmBox = false;
+    this.editForm.reset();
   }
   // custom confirm Dialog
   openDialog(message): void {
@@ -171,9 +174,18 @@ export class HomeComponent implements OnInit, AfterViewInit {
     });
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.confirmBox = true;
+        console.log('dialog' + result);
+        this.confirmBox = result;
       }
     });
   }
   get f() { return this.editForm.controls; }
+
+  keyPress(event: any) {
+    const pattern = /[0-9\+\-\ ]/;
+    const inputChar = String.fromCharCode(event.charCode);
+    if (event.keyCode !== 8 && !pattern.test(inputChar)) {
+      event.preventDefault();
+    }
+  }
 }

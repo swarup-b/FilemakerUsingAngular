@@ -7,8 +7,9 @@ import { BehaviorSubject } from 'rxjs';
 })
 export class MatTableService {
   value: boolean;
+  isPageDirty: false;
   contactlist = new BehaviorSubject<any>(this.value);
   constructor() { }
 
-
+  isDirty = new BehaviorSubject<any>(this.isPageDirty);
 }

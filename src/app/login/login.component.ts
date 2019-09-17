@@ -45,7 +45,7 @@ export class LoginComponent implements OnInit {
           this.toasterService.error('Invalid email or password');
         } else {
           this.response = '';
-          localStorage.setItem('key', data.token);
+          localStorage.setItem('token', data.token);
           this.router.navigate(['/home']);
         }
       }, // success path
