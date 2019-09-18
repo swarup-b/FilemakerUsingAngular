@@ -17,7 +17,6 @@ export class UserInterceptorService implements HttpInterceptor {
         }
       });
     }
-
     return next.handle(request);
   }
 }

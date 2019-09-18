@@ -10,12 +10,13 @@ export class FormgroupContactsService {
 
   form: FormGroup = this.fb.group({
     fullname: ['', Validators.required],
-      title: ['', Validators.required],
-      email: ['', [Validators.required, Validators.email]],
-      phone: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(10)]],
-      dob: ['', Validators.required],
+    title: ['', Validators.required],
+    email: ['', [Validators.required, Validators.email]],
+    phone: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(10)]],
+    dob: ['', Validators.required],
     recordId: ['']
   });
+  // set the value to the edit form
   populateForm(contacts) {
     this.form.controls.fullname.setValue(contacts.fullname);
     this.form.controls.title.setValue(contacts.title);

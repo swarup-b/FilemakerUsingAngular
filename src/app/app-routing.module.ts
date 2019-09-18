@@ -5,9 +5,9 @@ import { PageNotFoundComponent } from './page-not-found/page-not-found.component
 
 import { SignupComponent } from './signup/signup.component';
 import { HomeComponent } from './home/home.component';
-import { TestComponent } from './test/test.component';
 import { AuthGuard } from './auth/auth.guard';
 import { CanDeactivateGuardService } from './auth/can-deactivate-guard.service';
+import { TestComponent } from './test/test.component';
 
 
 

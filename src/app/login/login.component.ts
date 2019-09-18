@@ -17,12 +17,14 @@ export class LoginComponent implements OnInit {
   submitted = false;
   response: string;
   private url = 'http://localhost/EmployeeRegistration/public/user/v1/users/login';
+
   constructor(
     private fb: FormBuilder,
     private service: LoginService,
     private router: Router,
     private toasterService: ToastrService,
-    public dialog: MatDialog) { }
+    public dialog: MatDialog
+    ) { }
 
   ngOnInit() {
     this.loginForm = this.fb.group({
@@ -31,11 +33,12 @@ export class LoginComponent implements OnInit {
     });
 
   }
+  // Return form instance
   get f() { return this.loginForm.controls; }
 
+ // Submit Form
   onSubmit() {
     this.submitted = true;
-    // stop here if form is invalid
     if (this.loginForm.invalid) {
       return;
     }
@@ -57,19 +60,6 @@ export class LoginComponent implements OnInit {
       } // error path
     );
 
-  }
-
-  openDialog(): void {
-    const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
-      width: '350px',
-      data: 'Do you confirm the deletion of this data?'
-    });
-    dialogRef.afterClosed().subscribe(result => {
-      if (result) {
-        console.log('Yes clicked');
-        // DO SOMETHING
-      }
-    });
   }
 
 }

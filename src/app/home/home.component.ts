@@ -14,6 +14,7 @@ import { ToastrService } from 'ngx-toastr';
 import { ConfirmationDialogComponent } from '../shared/confirmation-dialog/confirmation-dialog.component';
 import { tap } from 'rxjs/operators';
 import { startWith } from 'rxjs/operators';
+import { ConfirmService } from '../services/confirm.service';
 
 
 @Component({
@@ -23,8 +24,6 @@ import { startWith } from 'rxjs/operators';
 })
 
 export class HomeComponent implements OnInit, AfterViewInit {
-  // @ViewChild('editForm', { static: false }) public editFormData: FormControl;
-  // Variable declared
   value = '60%';
   divProerty: boolean;
   confirmBox: boolean;
@@ -37,6 +36,9 @@ export class HomeComponent implements OnInit, AfterViewInit {
   private url = 'http://localhost/EmployeeRegistration/public/user/v1/contacts';
   canDeactivate: any;
 
+  @ViewChild(MatSort, { static: false }) sort: MatSort;
+  @ViewChild(MatPaginator, { static: false }) paginator: MatPaginator;
+
   // Constructor
   constructor(
     private authService: AuthService,
@@ -45,10 +47,10 @@ export class HomeComponent implements OnInit, AfterViewInit {
     private groupService: FormgroupContactsService,
     private dialog: MatDialog,
     private matservice: MatTableService,
-    private tosterService: ToastrService
+    private tosterService: ToastrService,
+    private dialogService: ConfirmService
   ) { }
-  @ViewChild(MatSort, { static: false }) sort: MatSort;
-  @ViewChild(MatPaginator, { static: false }) paginator: MatPaginator;
+
   // Init method
   ngOnInit() {
     this.divProerty = false;
@@ -72,7 +74,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
   }
 
   // Create new Contact
-  onCreate() {
+  onCreate = () => {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
@@ -81,21 +83,21 @@ export class HomeComponent implements OnInit, AfterViewInit {
   }
 
   // Edit Record
-  editRecord(row) {
+  editRecord = (row) => {
     this.divProerty = true;
     this.groupService.populateForm(row);
   }
 
   // Logout User
-  logout() {
+  logout = () => {
     this.authService.logout();
     this.router.navigate(['login']);
     this.tosterService.success('Logged Out..!');
   }
 
   // Delete Record
-  deleteRecord(row) {
-    this.openDialog('Are You Sure To Delete this record.');
+  async deleteRecord(row) {
+    await this.confirmDialog('Delete', 'Are you sute to delete this ?');
     console.log(this.confirmBox);
     if (this.confirmBox) {
       this.service.deleteRecordById(row.recordId, this.url).subscribe(
@@ -113,9 +115,9 @@ export class HomeComponent implements OnInit, AfterViewInit {
   }
 
   // Get all Contact Informations
-  getAllContactDetails(index, size) {
+  getAllContactDetails = (index, size) => {
     const newIndex = index * size;
-    const newUrl = 'http://localhost/EmployeeRegistration/public/user/v1/report?start=' + newIndex + '&range=' + size;
+    const newUrl = 'http://localhost/EmployeeRegistration/public/user/v1/contacts/allRecords?start=' + newIndex + '&range=' + size;
     this.service.getAllContacts(newUrl).subscribe(
       (response) => {
         this.totalRecord = response.headers.get('records');
@@ -152,9 +154,9 @@ export class HomeComponent implements OnInit, AfterViewInit {
   }
 
   // Close Edit Division
-  onClose() {
+  async onClose() {
     if (this.editForm.dirty || this.confirmBox) {
-      this.openDialog('Save Details.');
+      await this.confirmDialog('Upadate', 'Are you sure to move with out saving data ?');
       if (this.confirmBox) {
         this.update();
       } else {
@@ -167,20 +169,15 @@ export class HomeComponent implements OnInit, AfterViewInit {
     this.editForm.reset();
   }
   // custom confirm Dialog
-  openDialog(message): void {
-    const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
-      width: '350px',
-      data: message
-    });
-    dialogRef.afterClosed().subscribe(result => {
-      if (result) {
-        console.log('dialog' + result);
-        this.confirmBox = result;
-      }
-    });
+  confirmDialog(titel, msg) {
+    return this.dialogService.confirm(titel, msg)
+      .then((confirmed) => this.confirmBox = confirmed)
+      .catch((error) => console.log(error));
   }
+  // Get the form instance
   get f() { return this.editForm.controls; }
 
+  // Numeric field validations
   keyPress(event: any) {
     const pattern = /[0-9\+\-\ ]/;
     const inputChar = String.fromCharCode(event.charCode);

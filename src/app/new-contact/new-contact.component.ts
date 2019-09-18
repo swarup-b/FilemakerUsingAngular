@@ -33,7 +33,7 @@ export class NewContactComponent implements OnInit {
       dob: ['']
     });
   }
-
+// Commit the Records
   saveContact() {
     this.service.saveContacts(this.newContact.value, this.url).subscribe(
       response => {
@@ -52,11 +52,11 @@ export class NewContactComponent implements OnInit {
       }
     );
   }
-
-
+  // Close dialogbox
   onclose() {
     this.newContact.reset();
     this.matDialogRef.close();
   }
+  // Return form instance
   get f() { return this.newContact.controls; }
 }

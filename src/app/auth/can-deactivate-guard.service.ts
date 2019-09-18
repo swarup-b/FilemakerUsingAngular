@@ -1,41 +1,31 @@
 import { Injectable } from '@angular/core';
 import { CanDeactivate } from '@angular/router';
 import { HomeComponent } from '../home/home.component';
-import { Observable } from 'rxjs';
-import { ConfirmationDialogComponent } from '../shared/confirmation-dialog/confirmation-dialog.component';
-import { MatDialog } from '@angular/material';
+import { ConfirmService } from '../services/confirm.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CanDeactivateGuardService implements CanDeactivate<HomeComponent> {
-  confirmBox = true;
-  constructor(private dialog: MatDialog) { }
-  canDeactivate(component: HomeComponent): boolean {
+
+  confirmBox: boolean;  // Confirm Dialog variable
+
+  constructor(private dialogService: ConfirmService) { } // Constructor
+
+  async canDeactivate(component: HomeComponent): Promise<boolean> {
     if (component.editForm.dirty) {
-      const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
-        width: '350px',
-        data: 'Are You sure to move without Saving the data ?'
-      });
-      dialogRef.afterClosed().subscribe(result => {
-        if (!result) {
-          return false;
-        }
-      });
+      await this.confirmDialog();
+      if (!this.confirmBox) {
+        return false;
+      }
     }
+    component.editForm.reset();
     return true;
   }
-
-  openDialog(message): boolean {
-    const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
-      width: '350px',
-      data: message
-    });
-    dialogRef.afterClosed().subscribe(result => {
-      if (result) {
-        return true;
-      }
-    });
-    return false;
+// Confirom dialogbox
+   confirmDialog() {
+    return this.dialogService.confirm('Confirm..', 'Do you really want to move without saving the data?')
+      .then((confirmed) => this.confirmBox = confirmed)
+      .catch((error) => console.log(error));
   }
 }
