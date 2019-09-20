@@ -7,7 +7,6 @@ import { ToastrModule } from 'ngx-toastr';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
-import { FlexLayoutModule } from '@angular/flex-layout';
 
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { SignupComponent } from './signup/signup.component';
@@ -24,6 +23,7 @@ import { UserInterceptorService } from './auth/user-interceptor.service';
 import { ConfirmationDialogComponent } from './shared/confirmation-dialog/confirmation-dialog.component';
 import { ConfirmService } from './services/confirm.service';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { FlexLayoutModule } from '@angular/flex-layout';
 
 
 @NgModule({
@@ -35,7 +35,8 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     HomeComponent,
     NewContactComponent,
     TestComponent,
-    ConfirmationDialogComponent
+    ConfirmationDialogComponent,
+    FlexLayoutModule
   ],
   imports: [
     BrowserModule,

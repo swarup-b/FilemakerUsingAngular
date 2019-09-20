@@ -9,7 +9,7 @@
                         <mat-cell *matCellDef="let contacts"> {{contacts.recordId}}</mat-cell>
                     </ng-container>
                     <ng-container matColumnDef="fullname">
-                        <mat-header-cell *matHeaderCellDef mat-sort-header> FullName </mat-header-cell>
+                        <mat-header-cell *matHeaderCellDef mat-sort-header> Name </mat-header-cell>
                         <mat-cell *matCellDef="let contacts"> {{contacts.fullname}} </mat-cell>
                     </ng-container>
                     <ng-container matColumnDef="title">
@@ -21,11 +21,11 @@
                         <mat-cell *matCellDef="let contacts"> {{contacts.email}} </mat-cell>
                     </ng-container>
                     <ng-container matColumnDef="phone">
-                        <mat-header-cell *matHeaderCellDef matSortHeader> Phone </mat-header-cell>
+                        <mat-header-cell *matHeaderCellDef mat-sort-header> Phone </mat-header-cell>
                         <mat-cell *matCellDef="let contacts"> {{contacts.phone}} </mat-cell>
                     </ng-container>
                     <ng-container matColumnDef="dob">
-                        <mat-header-cell *matHeaderCellDef> DOB </mat-header-cell>
+                        <mat-header-cell *matHeaderCellDef mat-sort-header> DOB </mat-header-cell>
                         <mat-cell *matCellDef="let contacts"> {{contacts.dob}}</mat-cell>
                     </ng-container>
                     <ng-container matColumnDef="Actions">
@@ -57,7 +57,7 @@
                             <span aria-hidden="true">×</span>
                 </button>
                 <h3 style="margin-left: 25%;margin-bottom: 9%;margin-top: 6%;">Edit Contact </h3>
-                <form [formGroup]="editForm">
+                <form [formGroup]="editForm" (ngSubmit)="update()">
                     <input type="hidden" formControlName="recordId">
                     <div class="form-group row">
                         <div class="col-4"> <label>Full Name</label></div>
@@ -101,15 +101,17 @@
                         width: 53%;">
                         <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                         <mat-datepicker #picker></mat-datepicker>
-                        <!-- <div class="col-8"> <input type="date" class="form-control" formControlName="dob"></div> -->
                     </div>
 
-                    <div class="btn-div">
-                        <button class="btn btn-secondary" (click)="onClose()">Cancel</button>
-                        <button class="btn btn-success" (click)="update()" [disabled]="!editForm.dirty">Update</button>
+                    <div>
+                        <input type="submit" class="btn btn-success" [disabled]="editForm.pristine" value="Update">
+                        <input type="button" class="btn btn-secondary" value="Cancel" (click)="onClose()">
                     </div>
                 </form>
             </div>
+        </div>
+        <div class="spinner-border text-info" role="status" *ngIf="spinner">
+            <span class="sr-only">Loading...</span>
         </div>
         <div class="fab" (click)="onCreate()"> + </div>
     </div>

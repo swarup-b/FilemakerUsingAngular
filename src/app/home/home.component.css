@@ -16,17 +16,17 @@ body {
 }
 
 .fab {
-    width: 70px;
-    height: 70px;
-    background-color: rgb(132, 0, 255);
+    width: 60px;
+    height: 60px;
+    background-color: #f44336;
     border-radius: 50%;
     box-shadow: 0 6px 10px 0 #666;
-    font-size: 50px;
-    line-height: 70px;
+    font-size: 36px;
+    line-height: 59px;
     color: white;
     text-align: center;
     position: fixed;
-    right: 116px;
+    right: 81px;
     bottom: 50px;
     transition: all 0.1s ease-in-out;
 }
@@ -75,4 +75,10 @@ body {
 h1 {
     font-family: initial;
     color: white;
+}
+
+.spinner-border {
+    position: fixed;
+    margin-left: 558px;
+    margin-top: 193px;
 }
