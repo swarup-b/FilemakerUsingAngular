@@ -36,6 +36,10 @@ export class NewContactComponent implements OnInit {
   }
   // Commit the Records
   saveContact() {
+    this.isSubmitted = true;
+    if (this.newContact.invalid) {
+      return;
+    }
     const value1 = this.newContact.value;
     const OldDob = this.newContact.value.dob;
     const d = new Date(OldDob);

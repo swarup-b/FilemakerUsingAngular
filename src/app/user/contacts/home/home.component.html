@@ -62,7 +62,7 @@
                         <div class="col-4"> <label>Full Name</label></div>
                         <div class="col-8"> <input type="text" class="form-control" formControlName="fullname" [ngClass]="{ 'is-invalid': f.fullname.invalid && (f.fullname.dirty || isSubmitted)}">
                             <div *ngIf="f.fullname.invalid && (f.fullname.dirty || isSubmitted)" class="invalid-feedback d-block">
-                                <div *ngIf="f.fullname.errors.required">title is required</div>
+                                <div *ngIf="f.fullname.errors.required">Name is required</div>
                             </div>
                         </div>
                     </div>
@@ -70,7 +70,7 @@
                         <div class="col-4"> <label>Enter Title</label></div>
                         <div class="col-8"> <input type="text" class="form-control" formControlName="title" [ngClass]="{ 'is-invalid': f.title.invalid && (f.title.dirty || isSubmitted)}">
                             <div *ngIf="f.title.invalid && (f.title.dirty || isSubmitted)" class="invalid-feedback d-block">
-                                <div *ngIf="f.title.errors.required">title is required</div>
+                                <div *ngIf="f.title.errors.required">Title is required</div>
                             </div>
                         </div>
                     </div>
@@ -103,8 +103,9 @@
                     </div>
 
                     <div>
-                        <input type="submit" class="btn btn-success" [disabled]="editForm.pristine" value="Update">
                         <input type="button" class="btn btn-secondary" value="Cancel" (click)="onClose()">
+                        <input type="submit" class="btn btn-success update-btn" [disabled]="editForm.pristine" value="Update">
+
                     </div>
                 </form>
             </div>

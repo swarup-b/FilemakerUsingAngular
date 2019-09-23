@@ -2,10 +2,12 @@ import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { MatTableDataSource, MatSort, MatPaginator, MatDialog, MatDialogConfig } from '@angular/material';
 import { AuthService } from 'src/app/service/auth/auth.service';
+
 import { ApiService } from 'src/app/service/api.service';
 import { Router } from '@angular/router';
 import { FormService } from '../../../service/form.service';
 import { SharedVarService } from '../../../service/shared-var.service';
+
 import { ToastrService } from 'ngx-toastr';
 import { ConfirmDialogService } from 'src/app/service/confirm-dialog.service';
 import { startWith, tap } from 'rxjs/operators';
@@ -21,7 +23,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
   value = '60%';
   divProerty: boolean;
   confirmBox: boolean;
-  spinner = true;
+  spinner = false;
   contacts: [];
   editForm: FormGroup;
   listData: MatTableDataSource<any>;
@@ -54,8 +56,6 @@ export class HomeComponent implements OnInit, AfterViewInit {
         this.getAllContactDetails(this.paginator.pageIndex, this.paginator.pageSize);
       }
     });
-
-
   }
 
   // Lifecycle Method AfterViewInit
@@ -64,11 +64,18 @@ export class HomeComponent implements OnInit, AfterViewInit {
       startWith(null),
       tap(() => this.getAllContactDetails(this.paginator.pageIndex, this.paginator.pageSize))
     ).subscribe();
-    this.spinner = false;
   }
 
   // Create new Contact
-  onCreate() {
+  async onCreate() {
+    if (!this.editForm.pristine) {
+      const res = await this.confirmDialog('Confirm', 'Are you sure to move without saving this ?');
+      if (res) {
+        this.editForm.markAsPristine({ onlySelf: true });
+      } else {
+        return;
+      }
+    }
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
@@ -83,13 +90,15 @@ export class HomeComponent implements OnInit, AfterViewInit {
       if (res) {
         this.divProerty = true;
         this.groupService.populateForm(row);
-        this.editForm.markAsUntouched();
+        this.editForm.markAsPristine({ onlySelf: true });
+      } else {
+        return;
       }
-    } else {
-      this.divProerty = true;
-      this.groupService.populateForm(row);
-      this.editForm.markAsUntouched();
     }
+    this.divProerty = true;
+    this.groupService.populateForm(row);
+    this.editForm.markAsPristine({ onlySelf: true });
+
   }
 
   // Logout User
@@ -152,7 +161,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
       response => {
         this.getAllContactDetails(this.paginator.pageIndex, this.paginator.pageSize);
         this.tosterService.success('Updated Successfully..');
-        this.editForm.markAsPristine({onlySelf: true});
+        this.editForm.markAsPristine({ onlySelf: true });
         this.spinner = false;
       },
       error => {
