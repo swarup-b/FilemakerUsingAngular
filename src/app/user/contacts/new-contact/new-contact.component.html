@@ -2,7 +2,7 @@
     <div>
         <h3 style="margin-left: 30%;">Crete New Contact</h3><br>
     </div>
-    <form [formGroup]="newContact" (ngSubmit)="saveContact()">
+    <form [formGroup]="newContact">
         <div class="form-group row">
             <div class="col-4"> <label>Full Name</label></div>
             <div class="col-8">
@@ -31,11 +31,10 @@
             width: 53%;">
             <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
             <mat-datepicker #picker></mat-datepicker>
-            <!-- <div class="col-8"> <input type="date" class="form-control" formControlName="dob"></div> -->
         </div>
 
         <div class="btn-div">
-            <button class="btn btn-success " id="create ">Create</button>
+            <button class="btn btn-success " id="create" (click)="saveContact()">Create</button>
             <button class="btn btn-secondary " (click)="onclose() ">Cancel</button>
         </div>
     </form>

@@ -1,5 +1,5 @@
-import { Component, OnChanges, AfterViewInit } from '@angular/core';
-import { AuthService } from './services/auth.service';
+import { Component } from '@angular/core';
+import { AuthService } from './service/auth/auth.service';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 
@@ -9,7 +9,7 @@ import { ToastrService } from 'ngx-toastr';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent  {
+export class AppComponent {
   constructor(
     public authService: AuthService,
     private router: Router,

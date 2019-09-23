@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { CanDeactivate } from '@angular/router';
-import { HomeComponent } from '../home/home.component';
-import { ConfirmService } from '../services/confirm.service';
+import { HomeComponent } from '../../user/contacts/home/home.component';
+import { ConfirmDialogService } from '../confirm-dialog.service';
 
 @Injectable({
   providedIn: 'root'
@@ -10,7 +10,7 @@ export class CanDeactivateGuardService implements CanDeactivate<HomeComponent> {
 
   confirmBox: boolean;  // Confirm Dialog variable
 
-  constructor(private dialogService: ConfirmService) { } // Constructor
+  constructor(private dialogService: ConfirmDialogService) { } // Constructor
 
   async canDeactivate(component: HomeComponent): Promise<boolean> {
     if (component.editForm.dirty) {

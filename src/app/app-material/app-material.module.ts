@@ -33,6 +33,7 @@ import {MatTableModule} from '@angular/material/table';
     MatFormFieldModule
   ],
   exports: [
+    CommonModule,
     MatIconModule,
     MatPaginatorModule,
     MatSortModule,

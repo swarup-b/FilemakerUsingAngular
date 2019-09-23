@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { ConfirmationDialogComponent } from '../shared/confirmation-dialog/confirmation-dialog.component';
+import { ConfirmationDialogComponent } from '../user/shared/confirmation-dialog/confirmation-dialog.component';
 
 @Injectable({
   providedIn: 'root'
 })
-export class ConfirmService {
+export class ConfirmDialogService {
   constructor(private modalService: NgbModal) { }
 
   public confirm(

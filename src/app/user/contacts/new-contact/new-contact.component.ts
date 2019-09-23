@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { LoginService } from '../services/login.service';
+import { ApiService } from 'src/app/service/api.service';
 import { MatDialogRef } from '@angular/material';
-import { MatTableService } from '../services/mat-table.service';
+import { SharedVarService } from '../../../service/shared-var.service';
 import { ToastrService } from 'ngx-toastr';
+
 
 @Component({
   selector: 'app-new-contact',
@@ -17,9 +18,9 @@ export class NewContactComponent implements OnInit {
   private url = 'http://localhost/EmployeeRegistration/public/user/v1/contacts';
   constructor(
     private fb: FormBuilder,
-    private service: LoginService,
+    private service: ApiService,
     private matDialogRef: MatDialogRef<NewContactComponent>,
-    private matService: MatTableService,
+    private matService: SharedVarService,
     private tosterService: ToastrService
   ) { }
 
@@ -33,8 +34,14 @@ export class NewContactComponent implements OnInit {
       dob: ['']
     });
   }
-// Commit the Records
+  // Commit the Records
   saveContact() {
+    const value1 = this.newContact.value;
+    const OldDob = this.newContact.value.dob;
+    const d = new Date(OldDob);
+    const date = Date.UTC(d.getFullYear(), d.getMonth(), d.getDate());
+    const date1 = new Date(date);
+    this.newContact.value.dob = date1;
     this.service.saveContacts(this.newContact.value, this.url).subscribe(
       response => {
         if (response.data === 'Successful') {
@@ -59,4 +66,6 @@ export class NewContactComponent implements OnInit {
   }
   // Return form instance
   get f() { return this.newContact.controls; }
+
+
 }

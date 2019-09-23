@@ -1,33 +1,27 @@
 import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
-import { LoginService } from '../services/login.service';
+import { FormGroup } from '@angular/forms';
+import { MatTableDataSource, MatSort, MatPaginator, MatDialog, MatDialogConfig } from '@angular/material';
+import { AuthService } from 'src/app/service/auth/auth.service';
+import { ApiService } from 'src/app/service/api.service';
 import { Router } from '@angular/router';
-import { AuthService } from '../services/auth.service';
-
-import { MatTableDataSource, MatSort, MatPaginator } from '@angular/material';
-import { MatDialog, MatDialogConfig } from '@angular/material';
-import { NewContactComponent } from '../new-contact/new-contact.component';
-import { FormgroupContactsService } from '../services/formgroup-contacts.service';
-
-import { MatTableService } from '../services/mat-table.service';
-import { FormGroup, FormControl } from '@angular/forms';
+import { FormService } from '../../../service/form.service';
+import { SharedVarService } from '../../../service/shared-var.service';
 import { ToastrService } from 'ngx-toastr';
-import { ConfirmationDialogComponent } from '../shared/confirmation-dialog/confirmation-dialog.component';
-import { tap } from 'rxjs/operators';
-import { startWith } from 'rxjs/operators';
-import { ConfirmService } from '../services/confirm.service';
-
+import { ConfirmDialogService } from 'src/app/service/confirm-dialog.service';
+import { startWith, tap } from 'rxjs/operators';
+import { NewContactComponent } from '../new-contact/new-contact.component';
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css']
 })
-
 export class HomeComponent implements OnInit, AfterViewInit {
+
   value = '60%';
   divProerty: boolean;
   confirmBox: boolean;
-  spinner = false;
+  spinner = true;
   contacts: [];
   editForm: FormGroup;
   listData: MatTableDataSource<any>;
@@ -40,16 +34,15 @@ export class HomeComponent implements OnInit, AfterViewInit {
   @ViewChild(MatSort, { static: false }) sort: MatSort;
   @ViewChild(MatPaginator, { static: false }) paginator: MatPaginator;
 
-  // Constructor
   constructor(
     private authService: AuthService,
-    private service: LoginService,
+    private service: ApiService,
     private router: Router,
-    private groupService: FormgroupContactsService,
+    private groupService: FormService,
     private dialog: MatDialog,
-    private matservice: MatTableService,
+    private matservice: SharedVarService,
     private tosterService: ToastrService,
-    private dialogService: ConfirmService
+    private dialogService: ConfirmDialogService
   ) { }
 
   // Init method
@@ -71,7 +64,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
       startWith(null),
       tap(() => this.getAllContactDetails(this.paginator.pageIndex, this.paginator.pageSize))
     ).subscribe();
-
+    this.spinner = false;
   }
 
   // Create new Contact
@@ -150,7 +143,6 @@ export class HomeComponent implements OnInit, AfterViewInit {
     const date = Date.UTC(d.getFullYear(), d.getMonth(), d.getDate());
     const date1 = new Date(date);
     this.editForm.value.dob = date1;
-    console.log(date1);
     this.spinner = true;
     this.isSubmitted = true;
     if (this.editForm.invalid) {

@@ -1,10 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators, FormGroup, FormControl } from '@angular/forms';
-import { LoginService } from '../services/login.service';
+import { ApiService } from '../../service/api.service';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { MatDialog } from '@angular/material';
-import { ConfirmationDialogComponent } from '../shared/confirmation-dialog/confirmation-dialog.component';
 
 
 @Component({
@@ -20,7 +19,7 @@ export class LoginComponent implements OnInit {
 
   constructor(
     private fb: FormBuilder,
-    private service: LoginService,
+    private service: ApiService,
     private router: Router,
     private toasterService: ToastrService,
     public dialog: MatDialog
@@ -47,9 +46,8 @@ export class LoginComponent implements OnInit {
         if (data.error === 'Invalid email or password') {
           this.toasterService.error('Invalid email or password');
         } else {
-          this.response = '';
           localStorage.setItem('token', data.token);
-          this.router.navigate(['/home']);
+          this.router.navigate(['/contact']);
         }
       }, // success path
       error => {

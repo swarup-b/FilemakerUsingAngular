@@ -4,7 +4,8 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 @Injectable({
   providedIn: 'root'
 })
-export class FormgroupContactsService {
+export class FormService {
+
 
   constructor(private fb: FormBuilder) { }
 
@@ -27,4 +28,3 @@ export class FormgroupContactsService {
 
   }
 }
-

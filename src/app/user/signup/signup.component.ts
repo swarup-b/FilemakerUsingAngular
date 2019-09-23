@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators, FormGroup, FormControl } from '@angular/forms';
-import { LoginService } from '../services/login.service';
+import { ApiService } from '../../service/api.service';
 import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
 
@@ -14,7 +14,7 @@ export class SignupComponent implements OnInit {
   isSubmitted = false;
   constructor(
     private fb: FormBuilder,
-    private service: LoginService,
+    private service: ApiService,
     private tosterService: ToastrService,
     private router: Router
   ) { }

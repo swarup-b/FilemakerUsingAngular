@@ -3,27 +3,27 @@ import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { ToastrModule } from 'ngx-toastr';
-
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { LoginComponent } from './login/login.component';
-
-import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
-import { SignupComponent } from './signup/signup.component';
-import { HomeComponent } from './home/home.component';
+// import { LoginComponent } from './login/login.component';
+// import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
+// import { SignupComponent } from './signup/signup.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-
 import { AppMaterialModule } from './app-material/app-material.module';
-import { NewContactComponent } from './new-contact/new-contact.component';
-import { TestComponent } from './test/test.component';
-import { AuthGuard } from './auth/auth.guard';
-
-import { CanDeactivateGuardService } from './auth/can-deactivate-guard.service';
-import { UserInterceptorService } from './auth/user-interceptor.service';
-import { ConfirmationDialogComponent } from './shared/confirmation-dialog/confirmation-dialog.component';
-import { ConfirmService } from './services/confirm.service';
+import { AuthGuard } from './service/guard/auth.guard';
+import { CanDeactivateGuardService } from './service/guard/can-deactivate-guard.service';
+import { UserInterceptorService } from './service/auth/user-interceptor.service';
+import { ConfirmationDialogComponent } from './user/shared/confirmation-dialog/confirmation-dialog.component';
+import { ConfirmDialogService } from './service/confirm-dialog.service';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { FlexLayoutModule } from '@angular/flex-layout';
+import { ContactsModule } from './user/contacts/contacts.module';
+// import { NewContactComponent } from './contacts/new-contact/new-contact.component';
+
+import { LoginComponent } from './user/login/login.component';
+import { PageNotFoundComponent } from './user/page-not-found/page-not-found.component';
+import { SignupComponent } from './user/signup/signup.component';
+import { NewContactComponent } from './user/contacts/new-contact/new-contact.component';
 
 
 @NgModule({
@@ -32,11 +32,7 @@ import { FlexLayoutModule } from '@angular/flex-layout';
     LoginComponent,
     PageNotFoundComponent,
     SignupComponent,
-    HomeComponent,
-    NewContactComponent,
-    TestComponent,
-    ConfirmationDialogComponent,
-    FlexLayoutModule
+    ConfirmationDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -44,9 +40,10 @@ import { FlexLayoutModule } from '@angular/flex-layout';
     AppRoutingModule,
     ReactiveFormsModule,
     HttpClientModule,
+    FlexLayoutModule,
     BrowserAnimationsModule,
     AppMaterialModule,
-    FlexLayoutModule,
+    ContactsModule,
     ToastrModule.forRoot({
       timeOut: 5000,
       positionClass: 'toast-top-right',
@@ -54,7 +51,7 @@ import { FlexLayoutModule } from '@angular/flex-layout';
     })
   ],
   providers: [AuthGuard,
-    ConfirmService,
+    ConfirmDialogService,
     CanDeactivateGuardService,
     {
       provide: HTTP_INTERCEPTORS,
