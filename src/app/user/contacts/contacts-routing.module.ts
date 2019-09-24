@@ -5,8 +5,11 @@ import { AuthGuard } from '../../service/guard/auth.guard';
 import { CanDeactivateGuardService } from '../../service/guard/can-deactivate-guard.service';
 
 
+
 const routes: Routes = [
-  { path: '', component: HomeComponent , canActivate: [AuthGuard], canDeactivate: [CanDeactivateGuardService]}
+  { path: '', component: HomeComponent, canActivate: [AuthGuard], canDeactivate: [CanDeactivateGuardService] },
+  { path: '**', loadChildren: () => import('../../share-module/share-module.module').then(m => m.ShareModuleModule) }
+
 ];
 
 @NgModule({

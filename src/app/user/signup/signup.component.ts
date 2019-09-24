@@ -3,6 +3,7 @@ import { FormBuilder, Validators, FormGroup, FormControl } from '@angular/forms'
 import { ApiService } from '../../service/api.service';
 import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
+import { CustomValidatorService } from '../../service/validators/custom-validator.service';
 
 @Component({
   selector: 'app-signup',
@@ -16,7 +17,8 @@ export class SignupComponent implements OnInit {
     private fb: FormBuilder,
     private service: ApiService,
     private tosterService: ToastrService,
-    private router: Router
+    private router: Router,
+    private cv: CustomValidatorService
   ) { }
   private url = 'http://localhost/EmployeeRegistration/public/user/v1/users';
   ngOnInit() {
@@ -51,5 +53,7 @@ export class SignupComponent implements OnInit {
 
   }
   get f() { return this.signupForm.controls; }
-
+  isValid(field) {
+    return this.cv.isValidate(this.f, field, this.isSubmitted);
+  }
 }
