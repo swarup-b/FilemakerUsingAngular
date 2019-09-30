@@ -1,0 +1,43 @@
+<div class="container">
+    <button type="button" class="close" aria-label="Close" (click)="onClose()">
+                <span aria-hidden="true">×</span>
+    </button>
+    <h3 align="center">Welcome {{data.name}}</h3>
+    <div style="margin-left: 1%;">
+        <mat-form-field>
+            <input matInput placeholder="Search.. " [(ngModel)]="query ">
+        </mat-form-field>
+    </div>
+    <div fxLayout="row" fxLayout.md="column" fxFlexFill fxLayoutAlign="space-between">
+        <div fxFlex="70%">
+            <div class="row box scrollable">
+                <h5 style="
+                margin-left: 38%;
+            ">Create Activity</h5>
+                <form [formGroup]="activity" (submit)="createActivity()">
+                    <div class="row">
+                        <div>
+                            <app-ngx-editor [height]="'170px'" [minHeight]="'50px'" [spellcheck]="true" formControlName="activities" [placeholder]="'Enter text here...'"> </app-ngx-editor>
+                        </div>
+                    </div>
+                    <div>
+                        <button mat-raised-button color="primary" style="float: right;">Add</button>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+        <div fxFlex="">
+            <div class="mat-elevation-z8 scrollable">
+                <h3 align="center">Activities</h3>
+                <div *ngFor="let activities of activityList | search:query">
+                    <div class="card">
+                        <div class="">{{activities.ActivityDate}}</div>
+                        <div class="">{{activities.activities}}</div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

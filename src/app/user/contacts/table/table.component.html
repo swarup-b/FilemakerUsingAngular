@@ -1,3 +1,6 @@
+<mat-form-field>
+    <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Search..">
+</mat-form-field>
 <div class="mat-elevation-z8">
     <mat-table [dataSource]="listData" matSort>
         <ng-container matColumnDef="id">
@@ -29,6 +32,12 @@
             <mat-cell *matCellDef="let row">
                 <button mat-icon-button (click)="editRecord(row)"><mat-icon>launch</mat-icon></button>
                 <button mat-icon-button color="warn" (click)="deleteRecord(row)"><mat-icon>delete_outline</mat-icon></button>
+            </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="Activity">
+            <mat-header-cell *matHeaderCellDef mat-sort-header> Activity </mat-header-cell>
+            <mat-cell *matCellDef="let row">
+                <button mat-icon-button (click)="activity(row)"><mat-icon>transfer_within_a_station</mat-icon></button>
             </mat-cell>
         </ng-container>
         <ng-container matColumnDef="loading">

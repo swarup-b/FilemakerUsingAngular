@@ -4,6 +4,7 @@ import { ApiService } from '../../service/api.service';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { MatDialog } from '@angular/material';
+import { SharedVarService } from '../../service/shared-var.service';
 
 
 @Component({
@@ -22,11 +23,13 @@ export class LoginComponent implements OnInit {
     private service: ApiService,
     private router: Router,
     private toasterService: ToastrService,
-    public dialog: MatDialog
-    ) { }
+    public dialog: MatDialog,
+    private shareVar: SharedVarService
+  ) { }
 
   ngOnInit() {
     this.loginForm = this.fb.group({
+      type: ['Select', Validators.required],
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(6)]]
     });
@@ -35,7 +38,7 @@ export class LoginComponent implements OnInit {
   // Return form instance
   get f() { return this.loginForm.controls; }
 
- // Submit Form
+  // Submit Form
   onSubmit() {
     this.submitted = true;
     if (this.loginForm.invalid) {
@@ -47,7 +50,8 @@ export class LoginComponent implements OnInit {
           this.toasterService.error('Invalid email or password');
         } else {
           localStorage.setItem('token', data.token);
-          this.router.navigate(['/contact']);
+          localStorage.setItem('data', this.loginForm.value.type);
+          this.router.navigate(['/dashboard']);
         }
       }, // success path
       error => {

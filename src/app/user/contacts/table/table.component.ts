@@ -1,13 +1,11 @@
 import { Component, OnInit, AfterViewInit, ViewChild } from '@angular/core';
-import { MatTableDataSource, MatSort, MatPaginator } from '@angular/material';
+import { MatTableDataSource, MatSort, MatPaginator, MatDialogConfig } from '@angular/material';
 import { startWith, tap } from 'rxjs/operators';
-import { ApiService } from 'src/app/service/api.service';
-import { Router } from '@angular/router';
-import { FormService } from '../../../service/form.service';
 import { SharedVarService } from '../../../service/shared-var.service';
 import { ToastrService } from 'ngx-toastr';
 import { ConfirmDialogService } from 'src/app/service/confirm-dialog.service';
 import { FormGroup } from '@angular/forms';
+import { DashboardService } from 'src/app/service/dashboard.service';
 
 @Component({
   selector: 'app-table',
@@ -15,8 +13,7 @@ import { FormGroup } from '@angular/forms';
   styleUrls: ['./table.component.css']
 })
 export class TableComponent implements OnInit, AfterViewInit {
-  value = '60%';
-  divProerty: boolean;
+  contactResponse: any;
   confirmBox: boolean;
   spinner = false;
   contacts: [];
@@ -24,25 +21,23 @@ export class TableComponent implements OnInit, AfterViewInit {
   listData: MatTableDataSource<any>;
   totalRecord;
   isSubmitted = false;
-  displayedColumns = ['id', 'title', 'fullname', 'email', 'phone', 'dob', 'Actions'];
-  private url = 'http://localhost/EmployeeRegistration/public/user/v1/contacts';
+  displayedColumns = ['id', 'title', 'fullname', 'email', 'phone', 'dob', 'Actions', 'Activity'];
   canDeactivate: any;
   @ViewChild(MatSort, { static: false }) sort: MatSort;
   @ViewChild(MatPaginator, { static: false }) paginator: MatPaginator;
 
   constructor(
-    private service: ApiService,
-    private router: Router,
-    private groupService: FormService,
+    private dashboardService: DashboardService,
     private matservice: SharedVarService,
     private tosterService: ToastrService,
     private dialogService: ConfirmDialogService
   ) { }
 
+  applyFilter(filterValue: string) {
+    this.listData.filter = filterValue.trim().toLowerCase();
+  }
   // Init method
   ngOnInit() {
-    this.divProerty = false;
-    this.editForm = this.groupService.form;
     this.matservice.contactlist.subscribe(response => {
       if (response) {
         this.getAllContactDetails(this.paginator.pageIndex, this.paginator.pageSize);
@@ -62,53 +57,28 @@ export class TableComponent implements OnInit, AfterViewInit {
   }
   // Edit Record
   async editRecord(row) {
-    if (!this.editForm.pristine) {
-      const res = await this.confirmDialog('Confirm', 'Are you sure to move without saving this ?');
-      if (res) {
-        this.divProerty = true;
-        this.groupService.populateForm(row);
-        this.editForm.markAsUntouched();
-      }
-    } else {
-      this.divProerty = true;
-      this.groupService.populateForm(row);
-      this.editForm.markAsUntouched();
-    }
+    this.dashboardService.editRecord(row);
   }
   // Delete Record
   async deleteRecord(row) {
     const res = await this.confirmDialog('Delete', 'Are you sure to delete this ?');
     if (res) {
-      this.service.deleteRecordById(row.recordId, this.url).subscribe(
-        data => {
-          this.getAllContactDetails(this.paginator.pageIndex, this.paginator.pageSize);
-          this.tosterService.info('Deleted Successfully..');
-        },
-        error => {
-          console.log(error);
-        }
-      );
+      await this.dashboardService.deleteRecord(row);
+      this.getAllContactDetails(this.paginator.pageIndex, this.paginator.pageSize);
+      this.tosterService.info('Deleted Successfully..');
     }
   }
 
   // Get all Contact Informations
-  getAllContactDetails(index, size) {
-    const newIndex = index * size;
-    const newUrl = 'http://localhost/EmployeeRegistration/public/user/v1/contacts/allRecords?start=' + newIndex + '&range=' + size;
-    this.service.getAllContacts(newUrl).subscribe(
-      (response) => {
-        this.totalRecord = response.headers.get('records');
-        this.contacts = response.body;
-        this.listData = new MatTableDataSource(this.contacts);
-        this.listData.sort = this.sort;
-      },
-      error => {
-        if (error.status === 401) {
-          this.router.navigate(['login']);
-        }
-        console.log(error);
-      }
-    );
+   async getAllContactDetails(index, size) {
+    this.contactResponse =  await this.dashboardService.allRecords(index, size);
+    this.totalRecord = this.contactResponse.headers.get('records');
+    this.contacts = this.contactResponse.body;
+    this.listData = new MatTableDataSource(this.contacts);
+    this.listData.sort = this.sort;
+  }
+  activity(row) {
+    this.dashboardService.activity(row);
   }
   // custom confirm Dialog
   confirmDialog(titel, msg) {

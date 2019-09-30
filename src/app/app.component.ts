@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 
 
+
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -16,6 +17,9 @@ export class AppComponent {
     private tosterService: ToastrService
   ) { }
 
+   config = {
+    height: '5rem'
+  };
   // Logout User
   logout = () => {
     this.authService.logout();

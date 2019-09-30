@@ -23,6 +23,7 @@ export class SignupComponent implements OnInit {
   private url = 'http://localhost/EmployeeRegistration/public/user/v1/users';
   ngOnInit() {
     this.signupForm = this.fb.group({
+      type: ['Select', Validators.required],
       name: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(6)]],

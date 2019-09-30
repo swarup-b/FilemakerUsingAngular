@@ -1,0 +1,30 @@
+<div style="margin-left: 5%;">
+    <mat-form-field>
+        <input matInput placeholder="Search.. " [(ngModel)]="query ">
+    </mat-form-field>
+</div>
+<div *ngFor="let contact of contacts | search:query ">
+    <div class="card row ">
+        <div>
+            <div class=" ">
+                Id :{{contact.recordId}}</div>
+            <div class=" ">
+                Name :{{contact.fullname}}</div>
+            <div class=" ">
+                Title : {{contact.title}}</div>
+            <div class=" ">
+                Email :{{contact.email}}</div>
+            <div class=" ">
+                Phone :{{contact.phone}}</div>
+            <div class=" ">
+                DOB : {{contact.dob}}</div>
+        </div>
+        <div>
+            <div class=" ">
+                <button mat-icon-button (click)="editRecord(contact)"><mat-icon>launch</mat-icon></button>
+                <button mat-icon-button color="warn" (click)="deleteRecord(contact)"><mat-icon>delete_outline</mat-icon></button>
+                <button mat-icon-button (click)="activity(contact)"><mat-icon>transfer_within_a_station</mat-icon></button>
+            </div>
+        </div>
+    </div>
+</div>

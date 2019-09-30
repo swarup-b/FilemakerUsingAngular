@@ -1,11 +1,7 @@
 <nav class="navbar">
     <h1 style="color:white;">MINDFIRE</h1>
     <div class="row" *ngIf="authService.isAuthenticated()">
-        <div class="col-1"><input type="button" value="NewComponent" style="
-                   margin-left: -135px;;
-            " class="btn btn-success" [routerLink]="[ '/new' ]"></div>
         <div><input type="button" value="Logout" class="btn btn-danger" (click)="logout()"></div>
-
     </div>
 </nav>
 <router-outlet>

@@ -1,0 +1,42 @@
+<button mat-raised-button (click)="create()">Add New Record</button>
+<div fxLayout="row" fxLayout.md="column" fxFlexFill fxLayoutAlign="space-between">
+    <div fxFlex="">
+        <div class="scrollable">
+            <h3 align="center">UserList</h3>
+            <div *ngFor="let user of userList">
+                <div class="card">
+                    <div class="">{{user.name}}</div>
+                    <div class="">{{user.email}}</div>
+                    <div class="">{{user.password}}</div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <div fxFlex="" *ngIf="user == 'Employee'">
+        <div class="scrollable">
+            <h3 align="center">Admin</h3>
+            <div *ngFor="let admin of adminList">
+                <div class="card">
+                    <div class="">{{admin.name}}</div>
+                    <div class="">{{admin.email}}</div>
+                    <div class="">{{admin.dob}}</div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <div fxFlex="" *ngIf="user == 'Employee' || user == 'Staff'">
+        <div class="scrollable">
+            <h3 align="center">Staff</h3>
+            <div *ngFor="let staff of staffList">
+                <div class="card">
+                    <div class="">{{staff.name}}</div>
+                    <div class="">{{staff.email}}</div>
+                    <div class="">{{staff.dob}}</div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,12 +1,15 @@
 <div class="form-div">
+    <button type="button" class="close" aria-label="Close" (click)="onClose()">
+                <span aria-hidden="true">×</span>
+    </button>
     <div class="container-fluid form-div-2">
-        <h3>Register</h3>
-        <form [formGroup]="signupForm" (ngSubmit)="onSubmit()">
+        <h3 align="center">Register</h3>
+        <form [formGroup]="createProfile">
             <div class="form-group row">
                 <div class="col-md-4"> <label>Login Type</label></div>
                 <div class="col-md-6"> <select class="form-control" formControlName="type" [ngClass]="{ 'is-invalid': f.type.invalid}">
-                                <option value="Employee">Admin</option>
-                                <option value="Staff">Staff</option>
+                                <option value="Employee" *ngIf="sel=='Employee'">Admin</option>
+                                <option value="Staff" *ngIf="sel=='Employee' || sel == 'Staff'">Staff</option>
                                 <option value="User">User</option>
                               </select>
                     <div *ngIf="f.type.invalid" class="invalid-feedback d-block">
@@ -53,14 +56,9 @@
                     </div>
                 </div>
             </div>
-
-            <div class="form-group row">
-                <div class="col-md-4"> <label>Confirm Password</label></div>
-                <div class="col-md-6"> <input type="password" class="form-control"></div>
-            </div>
             <div class="btn-div">
-                <button class="btn btn-primary">Register</button>
-                <a [routerLink]="['/login']">Login Here..</a>
+                <button class="btn btn-primary" (click)="onSubmit()">Register</button>
+                <button class="btn btn-secondary">Cancel</button>
             </div>
         </form>
     </div>

@@ -13,11 +13,13 @@ import {MatButtonModule} from '@angular/material/button';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import {MatTableModule} from '@angular/material/table';
+import { MatInputModule } from '@angular/material';
+import { SearchPipe } from '../pipes/search.pipe';
 
 
 
 @NgModule({
-  declarations: [],
+  declarations: [ SearchPipe ],
   imports: [
     CommonModule,
     MatIconModule,
@@ -28,6 +30,7 @@ import {MatTableModule} from '@angular/material/table';
     MatDatepickerModule,
     BsDatepickerModule.forRoot(),
     MatTableModule,
+    MatInputModule,
     MatProgressSpinnerModule,
     MatNativeDateModule,
     MatFormFieldModule
@@ -42,9 +45,11 @@ import {MatTableModule} from '@angular/material/table';
     MatDatepickerModule,
     BsDatepickerModule,
     MatTableModule,
+    MatInputModule,
     MatProgressSpinnerModule,
     MatNativeDateModule,
-    MatFormFieldModule
+    MatFormFieldModule,
+    SearchPipe
   ]
 })
 export class AppMaterialModule { }

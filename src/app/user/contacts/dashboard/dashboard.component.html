@@ -1,0 +1,19 @@
+<div class="container main-div">
+    <div fxLayout="row" fxLayout.md="column" fxFlexFill fxLayoutAlign="space-between">
+        <div fxFlex="">
+            <div>
+                <h3 style="position:relative;" align="center">All Contact Informations</h3>
+            </div>
+            <div fxHide fxShow.gt-sm>
+                <app-table></app-table>
+            </div>
+            <div fxShow fxHide.gt-sm>
+                <div class="scrollable">
+                    <app-card-view></app-card-view>
+                </div>
+            </div>
+        </div>
+
+        <div class="fab" (click)="onCreate()"> + </div>
+    </div>
+</div>

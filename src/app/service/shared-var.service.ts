@@ -11,4 +11,7 @@ export class SharedVarService {
   constructor() { }
 
   isDirty = new BehaviorSubject<any>(this.isPageDirty);
+  upRecord = new BehaviorSubject<boolean>(this.value);
+  staff = new BehaviorSubject<string>('');
+  user = new BehaviorSubject<string>('');
 }
