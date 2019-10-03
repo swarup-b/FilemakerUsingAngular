@@ -5,6 +5,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { SharedVarService } from '../../../service/shared-var.service';
 import { ToastrService } from 'ngx-toastr';
 import { FormService } from 'src/app/service/form.service';
+import { HttpEventType } from '@angular/common/http';
 
 
 @Component({
@@ -13,11 +14,16 @@ import { FormService } from 'src/app/service/form.service';
   styleUrls: ['./new-contact.component.css']
 })
 export class NewContactComponent implements OnInit {
+  spinner = false;
+  fileData: File;
   newContact: FormGroup;
   message: string;
   isSubmitted = false;
   private url = 'http://localhost/EmployeeRegistration/public/user/v1/contacts';
   dialogType: string;
+  previewUrl: any = null;
+  fileUploadProgress: string;
+  imagePath: any = null;
   constructor(
     private fb: FormBuilder,
     private service: ApiService,
@@ -30,16 +36,12 @@ export class NewContactComponent implements OnInit {
 
   ngOnInit() {
     this.matService.contactlist.next(false);
+    this.previewUrl = this.data.imgPath;
+    if (this.previewUrl == 'null') {
+      this.previewUrl = 'http://simpleicon.com/wp-content/uploads/account.png';
+    }
     this.dialogType = this.data.type;
     this.newContact = this.formService.form;
-    // 
-    // this.newContact = this.fb.group({
-    //   fullname: ['', Validators.required],
-    //   title: ['', Validators.required],
-    //   email: ['', [Validators.required, Validators.email]],
-    //   phone: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(10)]],
-    //   dob: ['']
-    // });
   }
   // Commit the Records
   saveContact() {
@@ -47,11 +49,15 @@ export class NewContactComponent implements OnInit {
     if (this.newContact.invalid) {
       return;
     }
+    this.spinner = true;
     const OldDob = this.newContact.value.dob;
     const d = new Date(OldDob);
     const date = Date.UTC(d.getFullYear(), d.getMonth(), d.getDate());
     const date1 = new Date(date);
     this.newContact.value.dob = date1;
+    this.newContact.value.profilePic = this.imagePath;
+    // console.log(this.newContact.value);
+    // return;
     this.service.saveContacts(this.newContact.value, this.url).subscribe(
       response => {
         if (response.data === 'Successful') {
@@ -59,16 +65,21 @@ export class NewContactComponent implements OnInit {
           this.newContact.reset();
           this.matDialogRef.close();
           this.matService.contactlist.next(true);
+          this.spinner = false;
           this.tosterService.success('Created Successfully..');
         } else {
+          console.log(response);
+          this.spinner = false;
           this.tosterService.error('An error Occured');
         }
       },
       error => {
         console.log(error);
+        this.spinner = false;
       }
     );
   }
+
   update() {
     if (this.newContact.invalid) {
       return;
@@ -78,20 +89,63 @@ export class NewContactComponent implements OnInit {
     const date = Date.UTC(d.getFullYear(), d.getMonth(), d.getDate());
     const newDtae = new Date(date);
     this.newContact.value.dob = newDtae;
-    // this.spinner = true;
+    this.newContact.value.profilePic = this.imagePath;
+    this.spinner = true;
     this.isSubmitted = true;
+    console.log(this.newContact.value);
     this.service.updateContacts(this.newContact.value, this.url).subscribe(
       response => {
         this.matService.contactlist.next(true);
         this.tosterService.success('Updated Successfully..');
         this.newContact.markAsPristine({ onlySelf: true });
+        this.spinner = false;
         this.onclose();
-        // this.spinner = false;
+
       },
       error => {
         console.log(error);
       }
     );
+  }
+  // Upload Profile Picture
+  fileProgress(fileInput: any) {
+    this.fileData = fileInput.target.files[0];
+    this.uploadPhoto();
+    // console.log(this.fileData);
+    this.previewUrl = this.imagePath;
+    // this.preview();
+  }
+
+  preview() {
+    // Show preview
+    const mimeType = this.fileData.type;
+    if (mimeType.match(/image\/*/) == null) {
+      return;
+    }
+    const reader = new FileReader();
+    reader.readAsDataURL(this.fileData);
+    reader.onload = (event) => {
+      this.previewUrl = reader.result;
+      // this.imagePath = reader.result;
+    };
+  }
+  uploadPhoto() {
+    this.fileUploadProgress = '0%';
+    const formData = new FormData();
+    formData.append('file', this.fileData);
+    formData.append('data', this.newContact.value);
+    const url = 'http://localhost/EmployeeRegistration/public/user/v1/upload';
+    this.service.uploadImage(url, formData).subscribe(events => {
+      if (events.type === HttpEventType.UploadProgress) {
+        this.fileUploadProgress = Math.round(events.loaded / events.total * 100) + '%';
+        //  console.log(this.fileUploadProgress);
+      } else if (events.type === HttpEventType.Response) {
+        this.fileUploadProgress = '';
+        this.preview();
+        this.imagePath = events.body.path;
+        //  console.log(events.body);
+      }
+    });
   }
   // Close dialogbox
   onclose() {

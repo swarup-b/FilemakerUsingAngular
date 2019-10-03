@@ -23,7 +23,7 @@ export class DashboardComponent implements OnInit {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
-    dialogConfig.width = '35%';
+    dialogConfig.width = '50%';
     dialogConfig.data = { type: 'create' };
     this.dialog.open(NewContactComponent, dialogConfig);
   }

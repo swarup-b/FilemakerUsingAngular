@@ -21,7 +21,7 @@ export class TableComponent implements OnInit, AfterViewInit {
   listData: MatTableDataSource<any>;
   totalRecord;
   isSubmitted = false;
-  displayedColumns = ['id', 'title', 'fullname', 'email', 'phone', 'dob', 'Actions', 'Activity'];
+  displayedColumns = ['photo', 'id', 'title', 'fullname', 'email', 'phone', 'dob', 'Actions', 'Activity'];
   canDeactivate: any;
   @ViewChild(MatSort, { static: false }) sort: MatSort;
   @ViewChild(MatPaginator, { static: false }) paginator: MatPaginator;

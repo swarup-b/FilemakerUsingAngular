@@ -15,7 +15,7 @@ export class FormService {
     email: ['', [Validators.required, Validators.email]],
     phone: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(10)]],
     dob: ['', Validators.required],
-    recordId: ['']
+    recordId: ['1']
   });
   // set the value to the edit form
   populateForm(contacts) {

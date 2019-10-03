@@ -1,61 +1,82 @@
 <div class="container">
-    <button type="button" class="close" aria-label="Close" (click)="onclose()">
+    <div>
+        <button type="button" class="close" aria-label="Close" (click)="onclose()">
                 <span aria-hidden="true">×</span>
     </button>
-    <div>
-        <h3 style="margin-left: 30%;" *ngIf="dialogType === 'create'">Crete New Contact</h3><br>
-        <h3 style="margin-left: 30%;" *ngIf="dialogType == 'update'">Update Contact</h3><br>
-    </div>
-    <form [formGroup]="newContact">
-        <input type="hidden" formControlName="recordId">
-        <div class="form-group row">
-            <div class="col-4"> <label>Full Name</label></div>
-            <div class="col-8"> <input type="text" (keypress)="omitSpecial($event)" class="form-control" formControlName="fullname" [ngClass]="{ 'is-invalid': f.fullname.invalid && (f.fullname.dirty || isSubmitted)}">
-                <div *ngIf="f.fullname.invalid && (f.fullname.dirty || isSubmitted)" class="invalid-feedback d-block">
-                    <div *ngIf="f.fullname.errors.required">Name is required</div>
-                </div>
+        <div *ngIf="spinner">
+            <div class="spinner-border text-info" role="status">
+                <span class="sr-only">Loading...</span>
             </div>
         </div>
-        <div class="form-group row">
-            <div class="col-4"> <label>Enter Title</label></div>
-            <div class="col-8"> <input type="text" (keypress)="omitSpecial($event)" class="form-control" formControlName="title" [ngClass]="{ 'is-invalid': f.title.invalid && (f.title.dirty || isSubmitted)}">
-                <div *ngIf="f.title.invalid && (f.title.dirty || isSubmitted)" class="invalid-feedback d-block">
-                    <div *ngIf="f.title.errors.required">title is required</div>
+        <div>
+            <h3 style="margin-left: 30%;" *ngIf="dialogType === 'create'">Crete New Contact</h3><br>
+            <h3 style="margin-left: 30%;" *ngIf="dialogType == 'update'">Update Contact</h3><br>
+        </div>
+        <form [formGroup]="newContact">
+            <div *ngIf="dialogType == 'update'"><input type="hidden" formControlName="recordId"></div>
+            {{fileUploadProgress}}
+            <div class="profilePic form-group">
+                <div style=" margin-left: 39%;"><img [src]="previewUrl" alt="Profile Picture" style="width: 125px;height: 125px;">
+                    <!-- <div class="row">
+                        <div><input type="file" name="image" (change)="fileProgress($event)" /></div>
+                        <div><button mat-icon-button color="warn" (click)="uploadPhoto()"><mat-icon>cloud_upload</mat-icon></button></div>
+                    </div> -->
                 </div>
-            </div>
-        </div>
-        <div class="form-group row">
-            <div class="col-4"> <label>Enter Email</label></div>
-            <div class="col-8"> <input type="email" class="form-control" formControlName="email" [ngClass]="{ 'is-invalid': f.email.invalid && (f.email.dirty || isSubmitted)}">
-                <div *ngIf="f.email.invalid && (f.email.dirty || isSubmitted)" class="invalid-feedback d-block">
-                    <div *ngIf="f.email.errors.required">email is required</div>
-                    <div *ngIf="f.email.errors.email">Enter A valid email</div>
-                </div>
-            </div>
-        </div>
-        <div class="form-group row">
-            <div class="col-4"> <label>Enter Phone</label></div>
-            <div class="col-8">
-                <input type="text" class="form-control" formControlName="phone" [ngClass]="{ 'is-invalid': f.phone.invalid && (f.phone.dirty || isSubmitted)}">
-                <div *ngIf="f.phone.invalid && (f.phone.dirty || isSubmitted)" class="invalid-feedback d-block">
-                    <div *ngIf="f.phone.errors.required">phone is required</div>
-                    <div *ngIf="f.phone.errors.minlength">phone must be 10 digit</div>
-                    <div *ngIf="f.phone.errors.maxlength">phone must be 10 digit</div>
-                </div>
-            </div>
-        </div>
-        <div class="form-group row">
-            <div class="col-4"> <label>Enter DOB</label></div>
-            <input matInput [matDatepicker]="picker" placeholder="Choose a date" formControlName="dob" style="margin-left: 4%;
-            width: 53%;">
-            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-            <mat-datepicker #picker></mat-datepicker>
-        </div>
+                <div class="col-4" style="margin-left: 33%;"><label for="fileUpload" class="file-upload btn btn-primary btn-block rounded-pill shadow"><i class="fa fa-upload mr-2"></i>Browse..
+                        <input id="fileUpload" type="file" (change)="fileProgress($event)">
+                        </label></div>
 
-        <div class="btn-div">
-            <button class="btn btn-success " id="create" (click)="saveContact()" *ngIf="dialogType === 'create'">Create</button>
-            <button class="btn btn-success " id="create" (click)="update()" *ngIf="dialogType === 'update'">Update</button>
-            <button class="btn btn-secondary " (click)="onclose() ">Cancel</button>
-        </div>
-    </form>
+            </div>
+            <div class="form-group row">
+                <div class="col-4"> <label>Full Name</label></div>
+                <div class="col-8"> <input type="text" (keypress)="omitSpecial($event)" class="form-control" formControlName="fullname" [ngClass]="{ 'is-invalid': f.fullname.invalid && (f.fullname.dirty || isSubmitted)}">
+                    <div *ngIf="f.fullname.invalid && (f.fullname.dirty || isSubmitted)" class="invalid-feedback d-block">
+                        <div *ngIf="f.fullname.errors.required">Name is required</div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-4"> <label>Enter Title</label></div>
+                <div class="col-8"> <input type="text" (keypress)="omitSpecial($event)" class="form-control" formControlName="title" [ngClass]="{ 'is-invalid': f.title.invalid && (f.title.dirty || isSubmitted)}">
+                    <div *ngIf="f.title.invalid && (f.title.dirty || isSubmitted)" class="invalid-feedback d-block">
+                        <div *ngIf="f.title.errors.required">title is required</div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-4"> <label>Enter Email</label></div>
+                <div class="col-8"> <input type="email" class="form-control" formControlName="email" [ngClass]="{ 'is-invalid': f.email.invalid && (f.email.dirty || isSubmitted)}">
+                    <div *ngIf="f.email.invalid && (f.email.dirty || isSubmitted)" class="invalid-feedback d-block">
+                        <div *ngIf="f.email.errors.required">email is required</div>
+                        <div *ngIf="f.email.errors.email">Enter A valid email</div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-4"> <label>Enter Phone</label></div>
+                <div class="col-8">
+                    <input type="text" class="form-control" formControlName="phone" [ngClass]="{ 'is-invalid': f.phone.invalid && (f.phone.dirty || isSubmitted)}">
+                    <div *ngIf="f.phone.invalid && (f.phone.dirty || isSubmitted)" class="invalid-feedback d-block">
+                        <div *ngIf="f.phone.errors.required">phone is required</div>
+                        <div *ngIf="f.phone.errors.minlength">phone must be 10 digit</div>
+                        <div *ngIf="f.phone.errors.maxlength">phone must be 10 digit</div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-4"> <label>Enter DOB</label></div>
+                <input matInput [matDatepicker]="picker" placeholder="Choose a date" formControlName="dob" style="margin-left: 4%;
+            width: 53%;">
+                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+            </div>
+
+            <div class="btn-div">
+                <button class="btn btn-success " id="create" (click)="saveContact()" *ngIf="dialogType === 'create'">Create</button>
+                <button class="btn btn-success " id="create" (click)="update()" *ngIf="dialogType === 'update'">Update</button>
+                <button class="btn btn-secondary " (click)="onclose() ">Cancel</button>
+            </div>
+        </form>
+    </div>
+
 </div>

@@ -47,6 +47,7 @@ export class NewActivityComponent implements OnInit {
     this.service.createActivity(newUrl, this.activity.value).subscribe(
       response => {
         if (response.data === 'Successful') {
+          this.activity.reset();
           this.activity.markAsPristine();
           this.tostService.success('Created Successfully..');
           this.getAllActivity();

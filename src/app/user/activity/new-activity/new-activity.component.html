@@ -32,8 +32,9 @@
                 <h3 align="center">Activities</h3>
                 <div *ngFor="let activities of activityList | search:query">
                     <div class="card">
-                        <div class="">{{activities.ActivityDate}}</div>
-                        <div class="">{{activities.activities}}</div>
+                        <div class="date">{{activities.ActivityDate}}</div>
+                        <div class="activity">{{activities.activities}}</div>
+                        <div class="footdiv">Created By:{{data.name}}</div>
                     </div>
 
                 </div>

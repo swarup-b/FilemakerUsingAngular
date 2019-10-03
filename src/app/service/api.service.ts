@@ -57,11 +57,14 @@ export class ApiService {
     return this.httpClient.get(url);
   }
   allContacts(url): Promise<any> {
-    return this.httpClient.get(url, { observe: 'response' }) .toPromise()
-    .then(res => res)
-    .catch(err => {
-        return Promise.reject(err.json().error  || 'Server error');
-    });
+    return this.httpClient.get(url, { observe: 'response' }).toPromise()
+      .then(res => res)
+      .catch(err => {
+        return Promise.reject(err.json().error || 'Server error');
+      });
+  }
+  uploadImage(url, File): Observable<any> {
+    return this.httpClient.post(url , File, { reportProgress: true, observe: 'events' });
   }
 
 }
