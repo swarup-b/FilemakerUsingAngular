@@ -21,7 +21,7 @@ img {
 }
 
 body {
-    background: #00B4DB;
+    background: rgb(22, 154, 184);
     background: -webkit-linear-gradient(to right, #0083B0, #00B4DB);
     background: linear-gradient(to right, #0083B0, #00B4DB);
     height: 100vh;

@@ -6,6 +6,9 @@
 <div *ngFor="let contact of contacts | search:query ">
     <div class="card row ">
         <div>
+            <img [src]="contact.profilePic">
+        </div>
+        <div>
             <div class=" ">
                 Id :{{contact.recordId}}</div>
             <div class=" ">

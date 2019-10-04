@@ -1,11 +1,12 @@
 import { Component, OnInit, Inject } from '@angular/core';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { FormGroup } from '@angular/forms';
 import { ApiService } from 'src/app/service/api.service';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { SharedVarService } from '../../../service/shared-var.service';
 import { ToastrService } from 'ngx-toastr';
 import { FormService } from 'src/app/service/form.service';
 import { HttpEventType } from '@angular/common/http';
+import { ConfirmDialogService } from 'src/app/service/confirm-dialog.service';
 
 
 @Component({
@@ -24,24 +25,34 @@ export class NewContactComponent implements OnInit {
   previewUrl: any = null;
   fileUploadProgress: string;
   imagePath: any = null;
+  confirmBox: any;
   constructor(
-    private fb: FormBuilder,
-    private service: ApiService,
-    private matDialogRef: MatDialogRef<NewContactComponent>,
-    private matService: SharedVarService,
-    private tosterService: ToastrService,
-    private formService: FormService,
+    private _service: ApiService,
+    private _matDialogRef: MatDialogRef<NewContactComponent>,
+    private _matService: SharedVarService,
+    private _tosterService: ToastrService,
+    private _formService: FormService,
+    private _dialogService: ConfirmDialogService,
     @Inject(MAT_DIALOG_DATA) public data
   ) { }
 
   ngOnInit() {
-    this.matService.contactlist.next(false);
+    this._matService.contactlist.next(false);
     this.previewUrl = this.data.imgPath;
-    if (this.previewUrl == 'null') {
+    if (this.previewUrl === undefined) {
       this.previewUrl = 'http://simpleicon.com/wp-content/uploads/account.png';
     }
     this.dialogType = this.data.type;
-    this.newContact = this.formService.form;
+    this.newContact = this._formService.form;
+  }
+  // Mordify date
+  mordifyDate(formValue) {
+    const OldDob = formValue.dob;
+    const d = new Date(OldDob);
+    const utcDate = Date.UTC(d.getFullYear(), d.getMonth(), d.getDate());
+    const convertedDate = new Date(utcDate);
+    formValue.dob = convertedDate;
+    return formValue;
   }
   // Commit the Records
   saveContact() {
@@ -50,27 +61,21 @@ export class NewContactComponent implements OnInit {
       return;
     }
     this.spinner = true;
-    const OldDob = this.newContact.value.dob;
-    const d = new Date(OldDob);
-    const date = Date.UTC(d.getFullYear(), d.getMonth(), d.getDate());
-    const date1 = new Date(date);
-    this.newContact.value.dob = date1;
+    const contactDetails = this.mordifyDate(this.newContact.value);
     this.newContact.value.profilePic = this.imagePath;
-    // console.log(this.newContact.value);
-    // return;
-    this.service.saveContacts(this.newContact.value, this.url).subscribe(
+    this._service.saveContacts(contactDetails, this.url).subscribe(
       response => {
         if (response.data === 'Successful') {
           this.message = response.data;
           this.newContact.reset();
-          this.matDialogRef.close();
-          this.matService.contactlist.next(true);
+          this._matDialogRef.close();
+          this._matService.contactlist.next(true);
           this.spinner = false;
-          this.tosterService.success('Created Successfully..');
+          this._tosterService.success('Created Successfully..');
         } else {
           console.log(response);
           this.spinner = false;
-          this.tosterService.error('An error Occured');
+          this._tosterService.error('An error Occured');
         }
       },
       error => {
@@ -79,24 +84,19 @@ export class NewContactComponent implements OnInit {
       }
     );
   }
-
+  // Update record
   update() {
+    this.isSubmitted = true;
     if (this.newContact.invalid) {
       return;
     }
-    const OldDob = this.newContact.value.dob;
-    const d = new Date(OldDob);
-    const date = Date.UTC(d.getFullYear(), d.getMonth(), d.getDate());
-    const newDtae = new Date(date);
-    this.newContact.value.dob = newDtae;
-    this.newContact.value.profilePic = this.imagePath;
+    const updateDetails = this.mordifyDate(this.newContact.value);
+    this.newContact.value.profilePic = this.previewUrl;
     this.spinner = true;
-    this.isSubmitted = true;
-    console.log(this.newContact.value);
-    this.service.updateContacts(this.newContact.value, this.url).subscribe(
+    this._service.updateContacts(updateDetails, this.url).subscribe(
       response => {
-        this.matService.contactlist.next(true);
-        this.tosterService.success('Updated Successfully..');
+        this._matService.contactlist.next(true);
+        this._tosterService.success('Updated Successfully..');
         this.newContact.markAsPristine({ onlySelf: true });
         this.spinner = false;
         this.onclose();
@@ -111,50 +111,46 @@ export class NewContactComponent implements OnInit {
   fileProgress(fileInput: any) {
     this.fileData = fileInput.target.files[0];
     this.uploadPhoto();
-    // console.log(this.fileData);
-    this.previewUrl = this.imagePath;
-    // this.preview();
   }
-
-  preview() {
-    // Show preview
-    const mimeType = this.fileData.type;
-    if (mimeType.match(/image\/*/) == null) {
-      return;
-    }
-    const reader = new FileReader();
-    reader.readAsDataURL(this.fileData);
-    reader.onload = (event) => {
-      this.previewUrl = reader.result;
-      // this.imagePath = reader.result;
-    };
-  }
+  // Upload Photo to server
   uploadPhoto() {
     this.fileUploadProgress = '0%';
     const formData = new FormData();
     formData.append('file', this.fileData);
-    formData.append('data', this.newContact.value);
     const url = 'http://localhost/EmployeeRegistration/public/user/v1/upload';
-    this.service.uploadImage(url, formData).subscribe(events => {
+    this._service.uploadImage(url, formData).subscribe(events => {
       if (events.type === HttpEventType.UploadProgress) {
         this.fileUploadProgress = Math.round(events.loaded / events.total * 100) + '%';
-        //  console.log(this.fileUploadProgress);
       } else if (events.type === HttpEventType.Response) {
         this.fileUploadProgress = '';
-        this.preview();
         this.imagePath = events.body.path;
-        //  console.log(events.body);
+        this.previewUrl = this.imagePath;
       }
     });
   }
+  // custom confirm Dialog
+  confirmDialog(titel, msg) {
+    return this._dialogService.confirm(titel, msg)
+      .then((confirmed) => this.confirmBox = confirmed)
+      .catch((error) => console.log(error));
+  }
   // Close dialogbox
-  onclose() {
-    this.newContact.reset();
-    this.matDialogRef.close();
+  async onclose() {
+    if (!this.newContact.pristine) {
+      const res = await this.confirmDialog('Alert', 'Are you sure to move without saving.');
+      if (!res) {
+        return;
+      }
+      this.newContact.reset();
+      this._matDialogRef.close();
+    } else {
+      this._matDialogRef.close();
+    }
+
   }
   // Return form instance
   get f() { return this.newContact.controls; }
-
+  // Text Box Sanitization
   omitSpecial(event) {
     let k;
     k = event.charCode;  //         k = event.keyCode;  (Both can be used)

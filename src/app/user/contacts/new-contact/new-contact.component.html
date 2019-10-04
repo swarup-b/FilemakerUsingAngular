@@ -17,10 +17,7 @@
             {{fileUploadProgress}}
             <div class="profilePic form-group">
                 <div style=" margin-left: 39%;"><img [src]="previewUrl" alt="Profile Picture" style="width: 125px;height: 125px;">
-                    <!-- <div class="row">
-                        <div><input type="file" name="image" (change)="fileProgress($event)" /></div>
-                        <div><button mat-icon-button color="warn" (click)="uploadPhoto()"><mat-icon>cloud_upload</mat-icon></button></div>
-                    </div> -->
+
                 </div>
                 <div class="col-4" style="margin-left: 33%;"><label for="fileUpload" class="file-upload btn btn-primary btn-block rounded-pill shadow"><i class="fa fa-upload mr-2"></i>Browse..
                         <input id="fileUpload" type="file" (change)="fileProgress($event)">

@@ -11,8 +11,7 @@ import { SharedVarService } from '../../../service/shared-var.service';
 export class DashboardComponent implements OnInit {
 
   constructor(
-    private dialog: MatDialog,
-    private shareVar: SharedVarService
+    private _dialog: MatDialog
   ) { }
 
   ngOnInit() {
@@ -25,7 +24,7 @@ export class DashboardComponent implements OnInit {
     dialogConfig.autoFocus = true;
     dialogConfig.width = '50%';
     dialogConfig.data = { type: 'create' };
-    this.dialog.open(NewContactComponent, dialogConfig);
+    this._dialog.open(NewContactComponent, dialogConfig);
   }
 
 }

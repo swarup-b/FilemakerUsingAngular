@@ -1,7 +1,7 @@
 <div class="container">
     <button type="button" class="close" aria-label="Close" (click)="onClose()">
-                <span aria-hidden="true">×</span>
-    </button>
+                    <span aria-hidden="true">×</span>
+        </button>
     <h3 align="center">Welcome {{data.name}}</h3>
     <div style="margin-left: 1%;">
         <mat-form-field>
@@ -12,8 +12,8 @@
         <div fxFlex="70%">
             <div class="row box scrollable">
                 <h5 style="
-                margin-left: 38%;
-            ">Create Activity</h5>
+                    margin-left: 38%;
+                ">Create Activity</h5>
                 <form [formGroup]="activity" (submit)="createActivity()">
                     <div class="row">
                         <div>

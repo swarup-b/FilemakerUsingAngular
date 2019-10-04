@@ -1,8 +1,9 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { ApiService } from '../../../service/api.service';
-import {  MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { ToastrService } from 'ngx-toastr';
+import { ConfirmDialogService } from 'src/app/service/confirm-dialog.service';
 
 
 @Component({
@@ -16,19 +17,21 @@ export class NewActivityComponent implements OnInit {
   activityList: Array<any> = [];
   private url = 'http://localhost/EmployeeRegistration/public/user/v1/activities';
   query: any;
+  confirmBox: any;
 
 
 
   constructor(
-    private fb: FormBuilder,
-    private tostService: ToastrService,
-    private service: ApiService,
-    private matDlgRef: MatDialogRef<NewActivityComponent>,
+    private _fb: FormBuilder,
+    private _tostService: ToastrService,
+    private _service: ApiService,
+    private _dialogService: ConfirmDialogService,
+    private _matDlgRef: MatDialogRef<NewActivityComponent>,
     @Inject(MAT_DIALOG_DATA) public data
   ) { }
 
   ngOnInit() {
-    this.activity = this.fb.group(
+    this.activity = this._fb.group(
       {
         activities: ['']
       }
@@ -44,12 +47,12 @@ export class NewActivityComponent implements OnInit {
     const newDtae = new Date(date);
     this.activity.value.ActivityDate = newDtae;
     const newUrl = this.url + '/' + this.data.id;
-    this.service.createActivity(newUrl, this.activity.value).subscribe(
+    this._service.createActivity(newUrl, this.activity.value).subscribe(
       response => {
         if (response.data === 'Successful') {
           this.activity.reset();
           this.activity.markAsPristine();
-          this.tostService.success('Created Successfully..');
+          this._tostService.success('Created Successfully..');
           this.getAllActivity();
         } else {
           console.log(response);
@@ -60,7 +63,7 @@ export class NewActivityComponent implements OnInit {
   // Get All Activity
   getAllActivity() {
     const newUrl = this.url + '/' + this.data.id;
-    this.service.activities(newUrl).subscribe(
+    this._service.activities(newUrl).subscribe(
       response => {
         this.activityList = response as [];
         this.activityList.reverse();
@@ -71,9 +74,25 @@ export class NewActivityComponent implements OnInit {
   }
 
   // Close Modal
-  onClose() {
-    this.activity.reset();
-    this.matDlgRef.close();
+  async onClose() {
+    if (!this.activity.pristine) {
+      const res = await this.confirmDialog('Error', 'Are sure to Move, without Saving');
+      if (!res) {
+        return;
+      }
+      this.activity.reset();
+      this._matDlgRef.close();
+    } else {
+
+      this._matDlgRef.close();
+    }
+
   }
   get f() { return this.activity.controls; }
+  // custom confirm Dialog
+  confirmDialog(titel, msg) {
+    return this._dialogService.confirm(titel, msg)
+      .then((confirmed) => this.confirmBox = confirmed)
+      .catch((error) => console.log(error));
+  }
 }

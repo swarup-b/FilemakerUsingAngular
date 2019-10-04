@@ -27,10 +27,10 @@ export class TableComponent implements OnInit, AfterViewInit {
   @ViewChild(MatPaginator, { static: false }) paginator: MatPaginator;
 
   constructor(
-    private dashboardService: DashboardService,
-    private matservice: SharedVarService,
-    private tosterService: ToastrService,
-    private dialogService: ConfirmDialogService
+    private _dashboardService: DashboardService,
+    private _matservice: SharedVarService,
+    private _tosterService: ToastrService,
+    private _dialogService: ConfirmDialogService
   ) { }
 
   applyFilter(filterValue: string) {
@@ -38,7 +38,7 @@ export class TableComponent implements OnInit, AfterViewInit {
   }
   // Init method
   ngOnInit() {
-    this.matservice.contactlist.subscribe(response => {
+    this._matservice.contactlist.subscribe(response => {
       if (response) {
         this.getAllContactDetails(this.paginator.pageIndex, this.paginator.pageSize);
       }
@@ -57,32 +57,32 @@ export class TableComponent implements OnInit, AfterViewInit {
   }
   // Edit Record
   async editRecord(row) {
-    this.dashboardService.editRecord(row);
+    this._dashboardService.editRecord(row);
   }
   // Delete Record
   async deleteRecord(row) {
     const res = await this.confirmDialog('Delete', 'Are you sure to delete this ?');
     if (res) {
-      await this.dashboardService.deleteRecord(row);
+      await this._dashboardService.deleteRecord(row);
       this.getAllContactDetails(this.paginator.pageIndex, this.paginator.pageSize);
-      this.tosterService.info('Deleted Successfully..');
+      this._tosterService.info('Deleted Successfully..');
     }
   }
 
   // Get all Contact Informations
    async getAllContactDetails(index, size) {
-    this.contactResponse =  await this.dashboardService.allRecords(index, size);
+    this.contactResponse =  await this._dashboardService.allRecords(index, size);
     this.totalRecord = this.contactResponse.headers.get('records');
     this.contacts = this.contactResponse.body;
     this.listData = new MatTableDataSource(this.contacts);
     this.listData.sort = this.sort;
   }
   activity(row) {
-    this.dashboardService.activity(row);
+    this._dashboardService.activity(row);
   }
   // custom confirm Dialog
   confirmDialog(titel, msg) {
-    return this.dialogService.confirm(titel, msg)
+    return this._dialogService.confirm(titel, msg)
       .then((confirmed) => this.confirmBox = confirmed)
       .catch((error) => console.log(error));
   }

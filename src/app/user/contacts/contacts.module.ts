@@ -6,7 +6,7 @@ import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 
 
 import { ContactsRoutingModule } from './contacts-routing.module';
-import { HomeComponent } from './home/home.component';
+// import { HomeComponent } from './home/home.component';
 import { TableComponent } from './table/table.component';
 import { NewContactComponent } from './new-contact/new-contact.component';
 
@@ -18,7 +18,7 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 
 
 @NgModule({
-  declarations: [HomeComponent, TableComponent, NewContactComponent, CardViewComponent, DashboardComponent],
+  declarations: [TableComponent, NewContactComponent, CardViewComponent, DashboardComponent],
   imports: [
     CommonModule,
     ContactsRoutingModule,
