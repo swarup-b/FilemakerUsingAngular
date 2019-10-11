@@ -6,9 +6,10 @@ import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 
 
 import { ContactsRoutingModule } from './contacts-routing.module';
-// import { HomeComponent } from './home/home.component';
+import {MatFormFieldModule} from '@angular/material/form-field';
 import { TableComponent } from './table/table.component';
 import { NewContactComponent } from './new-contact/new-contact.component';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { FlexLayoutModule } from '@angular/flex-layout';
@@ -22,11 +23,13 @@ import { DashboardComponent } from './dashboard/dashboard.component';
   imports: [
     CommonModule,
     ContactsRoutingModule,
+    MatFormFieldModule,
     AppMaterialModule,
     FormsModule,
     ReactiveFormsModule,
     FlexLayoutModule,
-    ShareModuleModule
+    ShareModuleModule,
+    NgbModule
   ],
   providers: [
     { provide: MatDialogRef, useValue: {} },

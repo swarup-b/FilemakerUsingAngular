@@ -10,6 +10,7 @@ export class FormService {
   constructor(private fb: FormBuilder) { }
 
   form: FormGroup = this.fb.group({
+    profilePic: [''],
     fullname: ['', Validators.required],
     title: ['', Validators.required],
     email: ['', [Validators.required, Validators.email]],
@@ -25,6 +26,7 @@ export class FormService {
     this.form.controls.email.setValue(contacts.email);
     this.form.controls.dob.setValue(contacts.dob);
     this.form.controls.recordId.setValue(contacts.recordId);
+    this.form.controls.profilePic.setValue(contacts.profilePic);
 
   }
 }

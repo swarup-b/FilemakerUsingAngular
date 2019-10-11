@@ -31,6 +31,7 @@ import { ActivityModule } from './user/activity/activity.module';
 import { NewActivityComponent } from './user/activity/new-activity/new-activity.component';
 import { ProfileModule } from './user/profile/profile.module';
 import { CreateProfileComponent } from './user/create-profile/create-profile.component';
+import { ProfilePageComponent } from './profile/profile-page/profile-page.component';
 
 
 
@@ -41,6 +42,7 @@ import { CreateProfileComponent } from './user/create-profile/create-profile.com
     SignupComponent,
     ConfirmationDialogComponent,
     CreateProfileComponent,
+    ProfilePageComponent
     ],
   imports: [
     BrowserModule,

@@ -5,7 +5,6 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { SharedVarService } from '../../../service/shared-var.service';
 import { ToastrService } from 'ngx-toastr';
 import { FormService } from 'src/app/service/form.service';
-import { HttpEventType } from '@angular/common/http';
 import { ConfirmDialogService } from 'src/app/service/confirm-dialog.service';
 
 
@@ -14,18 +13,20 @@ import { ConfirmDialogService } from 'src/app/service/confirm-dialog.service';
   templateUrl: './new-contact.component.html',
   styleUrls: ['./new-contact.component.css']
 })
+
 export class NewContactComponent implements OnInit {
+  private url = 'http://localhost/EmployeeRegistration/public/user/v1/contacts';
+  fileUploadProgress: string;
+  newContact: FormGroup;
+  previewUrl: any = null;
+  imagePath: any = null;
+  isSubmitted = false;
+  dialogType: string;
+  confirmBox: any;
+  message: string;
   spinner = false;
   fileData: File;
-  newContact: FormGroup;
-  message: string;
-  isSubmitted = false;
-  private url = 'http://localhost/EmployeeRegistration/public/user/v1/contacts';
-  dialogType: string;
-  previewUrl: any = null;
-  fileUploadProgress: string;
-  imagePath: any = null;
-  confirmBox: any;
+
   constructor(
     private _service: ApiService,
     private _matDialogRef: MatDialogRef<NewContactComponent>,
@@ -45,15 +46,7 @@ export class NewContactComponent implements OnInit {
     this.dialogType = this.data.type;
     this.newContact = this._formService.form;
   }
-  // Mordify date
-  mordifyDate(formValue) {
-    const OldDob = formValue.dob;
-    const d = new Date(OldDob);
-    const utcDate = Date.UTC(d.getFullYear(), d.getMonth(), d.getDate());
-    const convertedDate = new Date(utcDate);
-    formValue.dob = convertedDate;
-    return formValue;
-  }
+
   // Commit the Records
   saveContact() {
     this.isSubmitted = true;
@@ -62,8 +55,15 @@ export class NewContactComponent implements OnInit {
     }
     this.spinner = true;
     const contactDetails = this.mordifyDate(this.newContact.value);
-    this.newContact.value.profilePic = this.imagePath;
-    this._service.saveContacts(contactDetails, this.url).subscribe(
+    const contactData = new FormData();
+    contactData.append('profilePic', this.newContact.get('profilePic').value);
+    contactData.append('fullname', this.newContact.get('fullname').value);
+    contactData.append('title', this.newContact.get('title').value);
+    contactData.append('email', this.newContact.get('email').value);
+    contactData.append('phone', this.newContact.get('phone').value);
+    contactData.append('dob', contactDetails.dob);
+    contactData.append('recordId', this.newContact.get('recordId').value);
+    this._service.saveContacts(contactData, this.url).subscribe(
       response => {
         if (response.data === 'Successful') {
           this.message = response.data;
@@ -84,16 +84,17 @@ export class NewContactComponent implements OnInit {
       }
     );
   }
+
   // Update record
   update() {
     this.isSubmitted = true;
     if (this.newContact.invalid) {
       return;
     }
-    const updateDetails = this.mordifyDate(this.newContact.value);
-    this.newContact.value.profilePic = this.previewUrl;
     this.spinner = true;
-    this._service.updateContacts(updateDetails, this.url).subscribe(
+    const updateDetails = this.mordifyDate(this.newContact.value);
+    updateDetails.profilePic = this.previewUrl;
+    this._service.updateContacts(updateDetails, this.url, this.newContact.get('recordId').value).subscribe(
       response => {
         this._matService.contactlist.next(true);
         this._tosterService.success('Updated Successfully..');
@@ -107,33 +108,30 @@ export class NewContactComponent implements OnInit {
       }
     );
   }
+
   // Upload Profile Picture
-  fileProgress(fileInput: any) {
+  async fileProgress(fileInput: any) {
     this.fileData = fileInput.target.files[0];
-    this.uploadPhoto();
+    this.newContact.get('profilePic').setValue(this.fileData);
+    this.base64Decode();
   }
-  // Upload Photo to server
-  uploadPhoto() {
-    this.fileUploadProgress = '0%';
-    const formData = new FormData();
-    formData.append('file', this.fileData);
-    const url = 'http://localhost/EmployeeRegistration/public/user/v1/upload';
-    this._service.uploadImage(url, formData).subscribe(events => {
-      if (events.type === HttpEventType.UploadProgress) {
-        this.fileUploadProgress = Math.round(events.loaded / events.total * 100) + '%';
-      } else if (events.type === HttpEventType.Response) {
-        this.fileUploadProgress = '';
-        this.imagePath = events.body.path;
-        this.previewUrl = this.imagePath;
-      }
-    });
+
+  base64Decode() {
+    const filereader = new FileReader();
+    filereader.readAsDataURL(this.fileData);
+    filereader.onloadend = () => {
+      this.previewUrl = filereader.result;
+    };
+
   }
+
   // custom confirm Dialog
   confirmDialog(titel, msg) {
     return this._dialogService.confirm(titel, msg)
       .then((confirmed) => this.confirmBox = confirmed)
       .catch((error) => console.log(error));
   }
+
   // Close dialogbox
   async onclose() {
     if (!this.newContact.pristine) {
@@ -141,15 +139,25 @@ export class NewContactComponent implements OnInit {
       if (!res) {
         return;
       }
-      this.newContact.reset();
-      this._matDialogRef.close();
-    } else {
-      this._matDialogRef.close();
     }
-
+    this.newContact.reset();
+    this._matDialogRef.close();
   }
+  // Mordify date
+  mordifyDate(formValue) {
+    const OldDob = formValue.dob;
+    const d = new Date(OldDob);
+    const utcDate = Date.UTC(d.getFullYear(), d.getMonth(), d.getDate());
+    const convertedDate = new Date(utcDate);
+    formValue.dob = convertedDate;
+    return formValue;
+  }
+
+
   // Return form instance
   get f() { return this.newContact.controls; }
+
+
   // Text Box Sanitization
   omitSpecial(event) {
     let k;

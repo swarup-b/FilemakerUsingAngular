@@ -1,1 +1,46 @@
-<p>profile-page works!</p>
+<div class="container">
+    <div>
+        <button type="button" class="close" aria-label="Close" (click)="onclose()">
+                    <span aria-hidden="true">×</span>
+        </button>
+        <form [formGroup]="newContact">
+            <div class="example-container">
+                <mat-form-field>
+                    <input matInput placeholder="Full Name" formControlName="fullname" [ngClass]="{ 'is-invalid': f.fullname.invalid && (f.fullname.dirty || isSubmitted)}">
+                    <div *ngIf="f.fullname.invalid && (f.fullname.dirty || isSubmitted)" class="invalid-feedback d-block">
+                        <div *ngIf="f.fullname.errors.required">Name is required</div>
+                    </div>
+                </mat-form-field>
+
+            </div>
+            <div class="example-container">
+                <mat-form-field>
+                    <input matInput placeholder="Title">
+                </mat-form-field>
+            </div>
+            <div class="example-container">
+                <mat-form-field>
+                    <input matInput placeholder="Email">
+                </mat-form-field>
+            </div>
+            <div class="example-container">
+                <mat-form-field>
+                    <input matInput placeholder="Phone">
+                </mat-form-field>
+            </div>
+            <div class="example-container">
+                <mat-form-field>
+                    <input matInput [matDatepicker]="picker" placeholder="Choose a date">
+                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-datepicker #picker></mat-datepicker>
+                </mat-form-field>
+            </div>
+            <div class="btn-div">
+                <!-- <button class="btn btn-success " id="create" (click)="saveContact()" *ngIf="dialogType === 'create'">Create</button> -->
+                <button class="btn btn-success " id="create" (click)="update()">Update</button>
+                <button class="btn btn-secondary " (click)="onclose() ">Cancel</button>
+            </div>
+        </form>
+    </div>
+
+</div>

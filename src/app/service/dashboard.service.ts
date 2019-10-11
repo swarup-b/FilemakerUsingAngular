@@ -22,7 +22,7 @@ export class DashboardService {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
-    dialogConfig.width = '45%';
+    dialogConfig.width = '50%';
     dialogConfig.data = { type: 'update', contactID: row.recordId , imgPath : row.profilePic };
     //  console.log(row.picture);
     this.dialog.open(NewContactComponent, dialogConfig);

@@ -9,24 +9,24 @@
             </div>
         </div>
         <div>
-            <h3 style="margin-left: 30%;" *ngIf="dialogType === 'create'">Crete New Contact</h3><br>
-            <h3 style="margin-left: 30%;" *ngIf="dialogType == 'update'">Update Contact</h3><br>
+            <h4 style="margin-left: 36%;margin-bottom: 8%;" *ngIf="dialogType === 'create'">Create New Contact</h4><br>
+            <h4 style="margin-left: 36%;margin-bottom: 8%;" *ngIf="dialogType == 'update'">Update Contact</h4><br>
         </div>
         <form [formGroup]="newContact">
             <div *ngIf="dialogType == 'update'"><input type="hidden" formControlName="recordId"></div>
-            {{fileUploadProgress}}
-            <div class="profilePic form-group">
-                <div style=" margin-left: 39%;"><img [src]="previewUrl" alt="Profile Picture" style="width: 125px;height: 125px;">
-
+            <div class="profilePic row">
+                <div style="margin-left: 45%; margin-top: -68px; margin-bottom: 2%;">
+                    <img [src]="previewUrl" alt="Profile Picture" style="width: 100px;height: 100px;">
                 </div>
-                <div class="col-4" style="margin-left: 33%;"><label for="fileUpload" class="file-upload btn btn-primary btn-block rounded-pill shadow"><i class="fa fa-upload mr-2"></i>Browse..
-                        <input id="fileUpload" type="file" (change)="fileProgress($event)">
-                        </label></div>
+                <div class="" style="margin-left: 3%; margin-top: -36px;"><label for="fileUpload" class="file-upload btn btn-primary btn-block rounded-pill shadow"><i class="fa fa-upload mr-2">Browse</i>
+                        <input id="fileUpload" type="file" (change)="fileProgress($event)" name="profilePic">
+                        </label>
+                </div>
 
             </div>
             <div class="form-group row">
                 <div class="col-4"> <label>Full Name</label></div>
-                <div class="col-8"> <input type="text" (keypress)="omitSpecial($event)" class="form-control" formControlName="fullname" [ngClass]="{ 'is-invalid': f.fullname.invalid && (f.fullname.dirty || isSubmitted)}">
+                <div class="col-6"> <input type="text" (keypress)="omitSpecial($event)" class="form-control" formControlName="fullname" [ngClass]="{ 'is-invalid': f.fullname.invalid && (f.fullname.dirty || isSubmitted)}">
                     <div *ngIf="f.fullname.invalid && (f.fullname.dirty || isSubmitted)" class="invalid-feedback d-block">
                         <div *ngIf="f.fullname.errors.required">Name is required</div>
                     </div>
@@ -34,7 +34,7 @@
             </div>
             <div class="form-group row">
                 <div class="col-4"> <label>Enter Title</label></div>
-                <div class="col-8"> <input type="text" (keypress)="omitSpecial($event)" class="form-control" formControlName="title" [ngClass]="{ 'is-invalid': f.title.invalid && (f.title.dirty || isSubmitted)}">
+                <div class="col-6"> <input type="text" (keypress)="omitSpecial($event)" class="form-control" formControlName="title" [ngClass]="{ 'is-invalid': f.title.invalid && (f.title.dirty || isSubmitted)}">
                     <div *ngIf="f.title.invalid && (f.title.dirty || isSubmitted)" class="invalid-feedback d-block">
                         <div *ngIf="f.title.errors.required">title is required</div>
                     </div>
@@ -42,7 +42,7 @@
             </div>
             <div class="form-group row">
                 <div class="col-4"> <label>Enter Email</label></div>
-                <div class="col-8"> <input type="email" class="form-control" formControlName="email" [ngClass]="{ 'is-invalid': f.email.invalid && (f.email.dirty || isSubmitted)}">
+                <div class="col-6"> <input type="email" class="form-control" formControlName="email" [ngClass]="{ 'is-invalid': f.email.invalid && (f.email.dirty || isSubmitted)}">
                     <div *ngIf="f.email.invalid && (f.email.dirty || isSubmitted)" class="invalid-feedback d-block">
                         <div *ngIf="f.email.errors.required">email is required</div>
                         <div *ngIf="f.email.errors.email">Enter A valid email</div>
@@ -51,7 +51,7 @@
             </div>
             <div class="form-group row">
                 <div class="col-4"> <label>Enter Phone</label></div>
-                <div class="col-8">
+                <div class="col-6">
                     <input type="text" class="form-control" formControlName="phone" [ngClass]="{ 'is-invalid': f.phone.invalid && (f.phone.dirty || isSubmitted)}">
                     <div *ngIf="f.phone.invalid && (f.phone.dirty || isSubmitted)" class="invalid-feedback d-block">
                         <div *ngIf="f.phone.errors.required">phone is required</div>
@@ -61,16 +61,18 @@
                 </div>
             </div>
             <div class="form-group row">
-                <div class="col-4"> <label>Enter DOB</label></div>
-                <input matInput [matDatepicker]="picker" placeholder="Choose a date" formControlName="dob" style="margin-left: 4%;
-            width: 53%;">
-                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                <mat-datepicker #picker></mat-datepicker>
+                <div class="col-4 dateDiv"> <label>Enter DOB</label></div>
+                <div>
+                    <mat-form-field><input matInput [matDatepicker]="picker" placeholder="Choose a date" formControlName="dob" style="margin-left: 4%;
+            width:50%; margin-bottom: -11px;"></mat-form-field>
+                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-datepicker #picker></mat-datepicker>
+                </div>
             </div>
 
             <div class="btn-div">
                 <button class="btn btn-success " id="create" (click)="saveContact()" *ngIf="dialogType === 'create'">Create</button>
-                <button class="btn btn-success " id="create" (click)="update()" *ngIf="dialogType === 'update'">Update</button>
+                <button class="btn btn-success " (click)="update()" *ngIf="dialogType === 'update'">Update</button>
                 <button class="btn btn-secondary " (click)="onclose() ">Cancel</button>
             </div>
         </form>

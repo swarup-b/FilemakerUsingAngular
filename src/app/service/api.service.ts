@@ -33,8 +33,8 @@ export class ApiService {
   }
 
   // Update Contact
-  updateContacts(value, url): Observable<any> {
-    const newUrl = url + '/' + value.recordId;
+  updateContacts(value, url, recordId): Observable<any> {
+    const newUrl = url + '/' + recordId;
     return this.httpClient.put(newUrl, value);
   }
 
