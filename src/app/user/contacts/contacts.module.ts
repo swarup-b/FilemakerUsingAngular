@@ -2,14 +2,16 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AppMaterialModule } from '../../app-material/app-material.module';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
+import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 
 
 
 import { ContactsRoutingModule } from './contacts-routing.module';
-import {MatFormFieldModule} from '@angular/material/form-field';
+import { MatFormFieldModule } from '@angular/material/form-field';
 import { TableComponent } from './table/table.component';
 import { NewContactComponent } from './new-contact/new-contact.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgxSpinnerModule} from 'ngx-spinner';
 
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { FlexLayoutModule } from '@angular/flex-layout';
@@ -25,6 +27,8 @@ import { DashboardComponent } from './dashboard/dashboard.component';
     ContactsRoutingModule,
     MatFormFieldModule,
     AppMaterialModule,
+    InfiniteScrollModule,
+    NgxSpinnerModule,
     FormsModule,
     ReactiveFormsModule,
     FlexLayoutModule,

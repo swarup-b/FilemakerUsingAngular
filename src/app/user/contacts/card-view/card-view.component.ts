@@ -3,6 +3,8 @@ import { DashboardService } from 'src/app/service/dashboard.service';
 import { ToastrService } from 'ngx-toastr';
 import { ConfirmDialogService } from 'src/app/service/confirm-dialog.service';
 import { MatDialog } from '@angular/material';
+import { NgxSpinnerService } from 'ngx-spinner';
+import { HttpClient } from '@angular/common/http';
 
 
 @Component({
@@ -15,21 +17,49 @@ export class CardViewComponent implements OnInit {
     private _dashboardService: DashboardService,
     private _tostService: ToastrService,
     private _dialogService: ConfirmDialogService,
-    private _dialog: MatDialog
+    public spinner: NgxSpinnerService,
+    private _httpClient: HttpClient
   ) { }
   response;
-  contacts: [];
+  contacts;
   confirmBox: boolean;
   query: any;
+  next = 0;
+  nextRecord = true;
 
   ngOnInit() {
-    this.getAllContact();
+    this.getAllContact(this.next, 'init');
+    this.spinner.show();
   }
 
-  async getAllContact() {
-    this.response = await this._dashboardService.allRecords(0, 5);
-    this.contacts = this.response.body;
+  getAllContact(nextIndex, type) {
+    const url = 'http://localhost/EmployeeRegistration/public/user/v1/contacts/allRecords?start=' + nextIndex + '&range=5';
+    this._httpClient.get(url).subscribe(
+      data => {
+        if (type === 'init') {
+          this.contacts = data as [];
+          this.next = this.next + 5;
+          this.spinner.hide();
+        } else if (type === 'scroll' && this.nextRecord) {
+          const records = data as [];
+          if (records == null) {
+            this.nextRecord = false;
+            this.spinner.hide();
+            return;
+          }
+          this.contacts = this.contacts.concat(data as []);
+          this.next = this.next + 5;
+          this.spinner.hide();
+        }
+      });
+    this.spinner.hide();
   }
+
+  onScroll() {
+    this.spinner.show();
+    this.getAllContact(this.next, 'scroll');
+  }
+
   // Edit Record
   async editRecord(row) {
     this._dashboardService.editRecord(row);

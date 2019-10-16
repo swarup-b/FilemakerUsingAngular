@@ -3,31 +3,39 @@
         <input matInput placeholder="Search.. " [(ngModel)]="query ">
     </mat-form-field>
 </div>
-<div *ngFor="let contact of contacts | search:query ">
-    <div class="card row ">
-        <div>
-            <img [src]="contact.profilePic">
-        </div>
-        <div>
-            <div class=" ">
-                Id :{{contact.recordId}}</div>
-            <div class=" ">
-                Name :{{contact.fullname}}</div>
-            <div class=" ">
-                Title : {{contact.title}}</div>
-            <div class=" ">
-                Email :{{contact.email}}</div>
-            <div class=" ">
-                Phone :{{contact.phone}}</div>
-            <div class=" ">
-                DOB : {{contact.dob}}</div>
-        </div>
-        <div>
-            <div class=" ">
-                <button mat-icon-button (click)="editRecord(contact)"><mat-icon>launch</mat-icon></button>
-                <button mat-icon-button color="warn" (click)="deleteRecord(contact)"><mat-icon>delete_outline</mat-icon></button>
-                <button mat-icon-button (click)="activity(contact)"><mat-icon>transfer_within_a_station</mat-icon></button>
+<div class="search-results" infiniteScroll [infiniteScrollDistance]="2" [infiniteScrollThrottle]="50" (scrolled)="onScroll()">
+    <div *ngFor="let contact of contacts | search:query ">
+        <div class="card" fxLayout="row">
+            <div fxFlex="">
+                <img [src]="contact.profilePic">
+            </div>
+            <div fxFlex="">
+                <div class=" ">
+                    Id :{{contact.recordId}}</div>
+                <div class=" ">
+                    Name :{{contact.fullname}}</div>
+                <div class=" ">
+                    Title : {{contact.title}}</div>
+                <div class=" ">
+                    Email :{{contact.email}}</div>
+                <div class=" ">
+                    Phone :{{contact.phone}}</div>
+                <div class=" ">
+                    DOB : {{contact.dob}}</div>
+            </div>
+            <div fxFlex="">
+                <div fxLayout="row">
+                    <div fxFlex=""><button mat-icon-button (click)="editRecord(contact)"><mat-icon>launch</mat-icon></button></div>
+                    <div fxFlex=""><button mat-icon-button color="warn" (click)="deleteRecord(contact)"><mat-icon>delete_outline</mat-icon></button></div>
+                    <div fxFlex=""><button mat-icon-button (click)="activity(contact)"><mat-icon>transfer_within_a_station</mat-icon></button></div>
+                </div>
             </div>
         </div>
+    </div>
+</div>
+<div class="row pb-5">
+    <div class="col-md-12 p-5">
+        <ngx-spinner bdOpacity=0.9 bdColor="" size="default" color="red" type="ball-pulse-sync">
+        </ngx-spinner>
     </div>
 </div>

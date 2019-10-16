@@ -8,7 +8,8 @@ import { Observable } from 'rxjs';
 export class ApiService {
   res;
   headers = new HttpHeaders();
-  header = this.headers.set('Authorization', localStorage.getItem('token'));
+  header = this.headers.set('Content-Type', 'multipart/form-data;');
+  // header = this.headers.set('Authorization', localStorage.getItem('token'));
 
   constructor(private httpClient: HttpClient) { }
   // LoginUser
@@ -64,7 +65,7 @@ export class ApiService {
       });
   }
   uploadImage(url, File): Observable<any> {
-    return this.httpClient.post(url , File, { reportProgress: true, observe: 'events' });
+    return this.httpClient.post(url, File, { reportProgress: true, observe: 'events' });
   }
 
 }

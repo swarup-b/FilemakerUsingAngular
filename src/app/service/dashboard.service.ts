@@ -52,7 +52,6 @@ export class DashboardService {
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
     dialogConfig.width = '1200px';
-    console.log(row);
     dialogConfig.data = { id: row.recordId, name: row.fullname };
     this.dialog.open(NewActivityComponent, dialogConfig);
   }

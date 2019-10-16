@@ -13,8 +13,10 @@ import {MatButtonModule} from '@angular/material/button';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import {MatTableModule} from '@angular/material/table';
+
 import { MatInputModule } from '@angular/material';
 import { SearchPipe } from '../pipes/search.pipe';
+import {MatProgressBarModule} from '@angular/material/progress-bar';
 
 
 
@@ -24,6 +26,7 @@ import { SearchPipe } from '../pipes/search.pipe';
     CommonModule,
     MatIconModule,
     MatPaginatorModule,
+    MatProgressBarModule,
     MatSortModule,
     MatDialogModule,
     MatButtonModule,
@@ -39,6 +42,7 @@ import { SearchPipe } from '../pipes/search.pipe';
     CommonModule,
     MatIconModule,
     MatPaginatorModule,
+    MatProgressBarModule,
     MatSortModule,
     MatDialogModule,
     MatButtonModule,
