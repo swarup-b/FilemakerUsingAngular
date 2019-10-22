@@ -18,10 +18,12 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { ShareModuleModule } from '../../share-module/share-module.module';
 import { CardViewComponent } from './card-view/card-view.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
+import { ContributeComponent } from './contribute/contribute.component';
+import { from } from 'rxjs';
 
 
 @NgModule({
-  declarations: [TableComponent, NewContactComponent, CardViewComponent, DashboardComponent],
+  declarations: [TableComponent, NewContactComponent, CardViewComponent, DashboardComponent, ContributeComponent],
   imports: [
     CommonModule,
     ContactsRoutingModule,

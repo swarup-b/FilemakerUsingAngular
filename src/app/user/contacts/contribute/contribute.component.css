@@ -1,0 +1,12 @@
+.card {
+    max-width: 400px;
+}
+
+.cardDiv {
+    text-align: -webkit-center;
+    margin-top: 10%;
+}
+
+.example-full-width {
+    width: 80%;
+}

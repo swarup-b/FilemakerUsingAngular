@@ -3,6 +3,9 @@
     <div class="row" *ngIf="authService.isAuthenticated()">
         <div><input type="button" value="Logout" class="btn btn-danger" (click)="logout()"></div>
     </div>
+    <!-- <div class="row" *ngIf="authService.isAuthenticated()">
+       
+    </div> -->
 </nav>
 
 <router-outlet>

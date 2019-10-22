@@ -21,7 +21,7 @@ export class TableComponent implements OnInit, AfterViewInit {
   listData: MatTableDataSource<any>;
   totalRecord;
   isSubmitted = false;
-  displayedColumns = ['photo', 'id', 'title', 'fullname', 'email', 'phone', 'dob', 'Actions', 'Activity'];
+  displayedColumns = ['photo', 'title', 'fullname', 'email', 'phone', 'dob', 'Actions', 'Activity', 'Contribute'];
   canDeactivate: any;
   @ViewChild(MatSort, { static: false }) sort: MatSort;
   @ViewChild(MatPaginator, { static: false }) paginator: MatPaginator;
@@ -70,8 +70,8 @@ export class TableComponent implements OnInit, AfterViewInit {
   }
 
   // Get all Contact Informations
-   async getAllContactDetails(index, size) {
-    this.contactResponse =  await this._dashboardService.allRecords(index, size);
+  async getAllContactDetails(index, size) {
+    this.contactResponse = await this._dashboardService.allRecords(index, size);
     this.totalRecord = this.contactResponse.headers.get('records');
     this.contacts = this.contactResponse.body;
     this.listData = new MatTableDataSource(this.contacts);
@@ -85,6 +85,10 @@ export class TableComponent implements OnInit, AfterViewInit {
     return this._dialogService.confirm(titel, msg)
       .then((confirmed) => this.confirmBox = confirmed)
       .catch((error) => console.log(error));
+  }
+
+  donate() {
+    console.log('Clicked..');
   }
 
 }

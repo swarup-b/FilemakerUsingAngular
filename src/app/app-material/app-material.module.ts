@@ -17,6 +17,9 @@ import {MatTableModule} from '@angular/material/table';
 import { MatInputModule } from '@angular/material';
 import { SearchPipe } from '../pipes/search.pipe';
 import {MatProgressBarModule} from '@angular/material/progress-bar';
+import {MatCardModule} from '@angular/material/card';
+import {MatRadioModule} from '@angular/material/radio';
+import {MatSelectModule} from '@angular/material/select';
 
 
 
@@ -36,7 +39,10 @@ import {MatProgressBarModule} from '@angular/material/progress-bar';
     MatInputModule,
     MatProgressSpinnerModule,
     MatNativeDateModule,
-    MatFormFieldModule
+    MatFormFieldModule,
+    MatCardModule,
+    MatSelectModule,
+    MatRadioModule
   ],
   exports: [
     CommonModule,
@@ -53,7 +59,10 @@ import {MatProgressBarModule} from '@angular/material/progress-bar';
     MatProgressSpinnerModule,
     MatNativeDateModule,
     MatFormFieldModule,
-    SearchPipe
+    SearchPipe,
+    MatCardModule,
+    MatSelectModule,
+    MatRadioModule
   ]
 })
 export class AppMaterialModule { }

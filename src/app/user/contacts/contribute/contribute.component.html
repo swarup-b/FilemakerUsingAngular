@@ -1,0 +1,27 @@
+<div class="container">
+    <h3 style="
+    text-align: center;
+">Donate Some amount to orphans</h3>
+    <div class="cardDiv">
+        <P>
+            In the heart of every child is a hunger for home. Not just for food and a place to sleep, but for safety and community. Most importantly: for love. At the Good Shepherd Agricultural Mission, 350kms east of Delhi in the town of Banbasa, we are much more
+            than a home for unwanted Indian orphans.
+        </P>
+        <p>
+            We are a family, where God’s love guides us all as we grow and expand year after year. Not just an Indian orphanage, we are a nearly self-sustaining organization; a working farm, a vibrant school, receiving no government assistance of any kind.
+        </p>
+    </div>
+    <div class="cardDiv">
+        <div>
+            <h4>Pay Some amount</h4>
+        </div>
+        <form [formGroup]="amountForm">
+            <div style="margin-bottom: 5px;">
+                <input formControlName="amount">
+            </div>
+            <div>
+                <button mat-raised-button color="primary" (click)="makePayment()">Pay</button>
+            </div>
+        </form>
+    </div>
+    <div>

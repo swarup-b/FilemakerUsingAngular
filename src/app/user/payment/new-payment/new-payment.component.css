@@ -1,0 +1,16 @@
+.example-card {
+    max-width: 500px;
+}
+
+.container {
+    margin-top: 10%;
+    margin-left: 20%;
+}
+
+div {
+    margin-bottom: 5px;
+}
+
+mat-card>.mat-card-actions:last-child {
+    margin-left: 15px;
+}

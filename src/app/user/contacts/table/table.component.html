@@ -7,10 +7,6 @@
             <mat-header-cell *matHeaderCellDef mat-sort-header> Photo</mat-header-cell>
             <mat-cell *matCellDef="let contacts"> <img [src]="contacts.profilePic" style="width: 100px;height: 100px;"></mat-cell>
         </ng-container>
-        <ng-container matColumnDef="id">
-            <mat-header-cell *matHeaderCellDef mat-sort-header> ID</mat-header-cell>
-            <mat-cell *matCellDef="let contacts"> {{contacts.recordId}}</mat-cell>
-        </ng-container>
         <ng-container matColumnDef="fullname">
             <mat-header-cell *matHeaderCellDef mat-sort-header> Name </mat-header-cell>
             <mat-cell *matCellDef="let contacts"> {{contacts.fullname}} </mat-cell>
@@ -43,6 +39,10 @@
             <mat-cell *matCellDef="let row">
                 <button mat-icon-button (click)="activity(row)"><mat-icon>transfer_within_a_station</mat-icon></button>
             </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="Contribute">
+            <mat-header-cell *matHeaderCellDef>Contribute</mat-header-cell>
+            <mat-cell *matCellDef="let row"><a routerLink="/dashboard/donate" [queryParams]="{ order: row}">Donate</a></mat-cell>
         </ng-container>
         <ng-container matColumnDef="loading">
             <mat-header-cell *matFooterCellDef colspan="6">

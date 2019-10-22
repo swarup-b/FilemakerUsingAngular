@@ -1,0 +1,79 @@
+<div class="container">
+    <mat-radio-group aria-label="Select an option">
+        <div>
+            <div>
+                <mat-radio-button checked value="1" (change)="changePaymentType('CreditCard')">Pay using CreditCard</mat-radio-button>
+            </div>
+            <div *ngIf="paymentType === 'CreditCard'">
+                <mat-card class="example-card">
+                    <mat-card-header>
+                        <mat-card-title>Credit Card </mat-card-title>
+                        <mat-card-subtitle></mat-card-subtitle>
+                    </mat-card-header>
+                    <mat-card-content>
+                        <form [formGroup]="creditCardForm">
+                            <div>
+                                <div class="formGroup col-8"><input type="tel" class="form-control" formControlName="cardNo" placeholder="Card Number"></div>
+                            </div>
+                            <div>
+                                <div class="formGroup col-8"><input type="text" class="form-control" formControlName="nameOnCard" placeholder="Name on Card"></div>
+                            </div>
+                            <div>
+                                <div class="formGroup col-8 row">
+                                    <div class="col-4"><input type="text" class="form-control" placeholder="MM" formControlName="month"></div>
+                                    <div class="col-4"><input class="form-control" type="text" placeholder="YYYY" formControlName="year"></div>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="formGroup col-4"><input type="text" class="form-control" placeholder="CVV" formControlName="cvv"></div>
+                            </div>
+                        </form>
+                    </mat-card-content>
+                    <mat-card-actions>
+                        <button mat-raised-button>Cancel</button>
+                        <button mat-raised-button color="primary" (click)="makePayment()">Pay {{amount}}</button>
+                    </mat-card-actions>
+                </mat-card>
+            </div>
+        </div>
+        <div>
+            <div>
+                <mat-radio-button value="2" (change)="changePaymentType('Cheque')">Pay Using cheque</mat-radio-button>
+            </div>
+            <div *ngIf="paymentType === 'Cheque'">
+                <mat-card class="example-card">
+                    <mat-card-header>
+                        <mat-card-title>Cheque</mat-card-title>
+                        <mat-card-subtitle></mat-card-subtitle>
+                    </mat-card-header>
+                    <mat-card-content>
+                    </mat-card-content>
+                    <mat-card-actions>
+                        <button mat-raised-button>Cancel</button>
+                        <button mat-raised-button color="primary">Pay {{amount}}</button>
+                    </mat-card-actions>
+                </mat-card>
+            </div>
+        </div>
+        <div>
+            <div>
+                <mat-radio-button value="3" (change)="changePaymentType('UPI')">Pay using UPI</mat-radio-button>
+            </div>
+            <div *ngIf="paymentType === 'UPI'">
+                <mat-card class="example-card">
+                    <mat-card-header>
+                        <mat-card-title>UPI</mat-card-title>
+                        <mat-card-subtitle></mat-card-subtitle>
+                    </mat-card-header>
+                    <mat-card-content>
+
+                    </mat-card-content>
+                    <mat-card-actions>
+                        <button mat-raised-button>Cancel</button>
+                        <button mat-raised-button color="primary" (click)="makePayment()">Pay:{{amount}}</button>
+                    </mat-card-actions>
+                </mat-card>
+            </div>
+        </div>
+    </mat-radio-group>
+</div>
