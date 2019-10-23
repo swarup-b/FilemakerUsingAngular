@@ -67,5 +67,8 @@ export class ApiService {
   uploadImage(url, File): Observable<any> {
     return this.httpClient.post(url, File, { reportProgress: true, observe: 'events' });
   }
+  makePayment(url, value): Observable<any> {
+    return this.httpClient.post(url, value);
+  }
 
 }

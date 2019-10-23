@@ -36,6 +36,7 @@ export class NewContactComponent implements OnInit {
     private _formService: FormService,
     private _dialogService: ConfirmDialogService,
     public spinner: NgxSpinnerService,
+    
     @Inject(MAT_DIALOG_DATA) public data
   ) { }
 

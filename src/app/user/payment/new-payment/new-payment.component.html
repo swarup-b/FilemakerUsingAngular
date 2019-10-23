@@ -1,4 +1,4 @@
-<div class="container">
+<div class="container" *ngIf="paymentStatus">
     <mat-radio-group aria-label="Select an option">
         <div>
             <div>
@@ -13,24 +13,43 @@
                     <mat-card-content>
                         <form [formGroup]="creditCardForm">
                             <div>
-                                <div class="formGroup col-8"><input type="tel" class="form-control" formControlName="cardNo" placeholder="Card Number"></div>
-                            </div>
-                            <div>
-                                <div class="formGroup col-8"><input type="text" class="form-control" formControlName="nameOnCard" placeholder="Name on Card"></div>
-                            </div>
-                            <div>
-                                <div class="formGroup col-8 row">
-                                    <div class="col-4"><input type="text" class="form-control" placeholder="MM" formControlName="month"></div>
-                                    <div class="col-4"><input class="form-control" type="text" placeholder="YYYY" formControlName="year"></div>
+                                <div class="formGroup col-8"><input type="tel" class="form-control" formControlName="cardNo" placeholder="Card Number" [ngClass]="{ 'is-invalid': f.cardNo.invalid }">
+                                    <div *ngIf="f.cardNo.invalid" class="invalid-feedback d-block">
+                                        <div *ngIf="f.cardNo.errors.required">Card No. is required.</div>
+                                    </div>
                                 </div>
                             </div>
                             <div>
-                                <div class="formGroup col-4"><input type="text" class="form-control" placeholder="CVV" formControlName="cvv"></div>
+                                <div class="formGroup col-8"><input type="text" class="form-control" formControlName="nameOnCard" placeholder="Name on Card" [ngClass]="{ 'is-invalid': f.nameOnCard.invalid }">
+                                    <div *ngIf="f.nameOnCard.invalid" class="invalid-feedback d-block">
+                                        <div *ngIf="f.nameOnCard.errors.required">Name is required.</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="formGroup col-8 row">
+                                    <div class="col-4"><input type="text" class="form-control" placeholder="MM" formControlName="month" [ngClass]="{ 'is-invalid': f.month.invalid }">
+                                        <div *ngIf="f.month.invalid" class="invalid-feedback d-block">
+                                            <div *ngIf="f.month.errors.required">required.</div>
+                                        </div>
+                                    </div>
+                                    <div class="col-4"><input class="form-control" type="text" placeholder="YYYY" formControlName="year" [ngClass]="{ 'is-invalid': f.year.invalid }">
+                                        <div *ngIf="f.year.invalid" class="invalid-feedback d-block">
+                                            <div *ngIf="f.year.errors.required">required.</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="formGroup col-4"><input type="text" class="form-control" placeholder="CVV" formControlName="cvv" [ngClass]="{ 'is-invalid': f.cvv.invalid }">
+                                    <div *ngIf="f.cvv.invalid" class="invalid-feedback d-block">
+                                        <div *ngIf="f.cvv.errors.required">CVV is required.</div>
+                                    </div>
+                                </div>
                             </div>
                         </form>
                     </mat-card-content>
                     <mat-card-actions>
-                        <button mat-raised-button>Cancel</button>
                         <button mat-raised-button color="primary" (click)="makePayment()">Pay {{amount}}</button>
                     </mat-card-actions>
                 </mat-card>
@@ -47,9 +66,24 @@
                         <mat-card-subtitle></mat-card-subtitle>
                     </mat-card-header>
                     <mat-card-content>
+                        <!-- <form [formGroup]="chequeForm">
+                            <div>
+                                <div class="formGroup col-8"><input type="tel" class="form-control" formControlName="chequeNo" placeholder="Card Number" [ngClass]="{ 'is-invalid': f1.chequeNo.invalid }">
+                                    <div *ngIf="f1.chequeNo.invalid" class="invalid-feedback d-block">
+                                        <div *ngIf="f1.chequeNo.errors.required">Card No. is required.</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="formGroup col-8"><input type="text" class="form-control" formControlName="name" placeholder="Name" [ngClass]="{ 'is-invalid': f1.name.invalid }">
+                                    <div *ngIf="f1.name.invalid" class="invalid-feedback d-block">
+                                        <div *ngIf="f1.name.errors.required">Name is required.</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form> -->
                     </mat-card-content>
                     <mat-card-actions>
-                        <button mat-raised-button>Cancel</button>
                         <button mat-raised-button color="primary">Pay {{amount}}</button>
                     </mat-card-actions>
                 </mat-card>
@@ -57,23 +91,41 @@
         </div>
         <div>
             <div>
-                <mat-radio-button value="3" (change)="changePaymentType('UPI')">Pay using UPI</mat-radio-button>
+                <mat-radio-button value="3" (change)="changePaymentType('Paypal')">Pay using PayPal</mat-radio-button>
             </div>
-            <div *ngIf="paymentType === 'UPI'">
+            <div *ngIf="paymentType === 'Paypal'">
                 <mat-card class="example-card">
                     <mat-card-header>
-                        <mat-card-title>UPI</mat-card-title>
+                        <mat-card-title>PayPal</mat-card-title>
                         <mat-card-subtitle></mat-card-subtitle>
                     </mat-card-header>
                     <mat-card-content>
-
+                        <div>Pay : Rs. {{amount}}</div>
                     </mat-card-content>
                     <mat-card-actions>
-                        <button mat-raised-button>Cancel</button>
-                        <button mat-raised-button color="primary" (click)="makePayment()">Pay:{{amount}}</button>
+                        <!-- <button mat-raised-button color="primary" (click)="makePayment('Paypal')">Pay using Paypal</button> -->
                     </mat-card-actions>
                 </mat-card>
             </div>
         </div>
     </mat-radio-group>
+</div>
+<div class="container" *ngIf="!paymentStatus">
+    <mat-card class="example-card">
+        <mat-card-header>
+            <mat-card-title>Invoice</mat-card-title>
+            <mat-card-subtitle></mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+            <div>Name : {{name}}</div>
+            <div>Status : {{status}}</div>
+            <div>Transaction Id : {{transactionId}}</div>
+            <div>Amount : {{transactionAmount}}</div>
+        </mat-card-content>
+    </mat-card>
+</div>
+<div>
+    <ngx-spinner bdColor="rgba(51,51,51,0.8)" size="medium" color="#fff" type="ball-scale-multiple">
+
+    </ngx-spinner>
 </div>

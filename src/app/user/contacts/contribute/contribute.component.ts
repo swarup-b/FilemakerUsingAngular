@@ -10,7 +10,8 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 })
 export class ContributeComponent implements OnInit {
   amountForm: FormGroup;
-  operators = ['BSNL', 'Vodafone', 'jio', 'Airtel', 'Idea', 'TATA Docomo'];
+  recordId;
+  contactname;
   constructor(
     private activatedRoute: ActivatedRoute,
     private fb: FormBuilder,
@@ -23,13 +24,15 @@ export class ContributeComponent implements OnInit {
     });
     this.activatedRoute.queryParams
       .subscribe(params => {
-        console.log(params); // {order: "popular"
+        const queryParamValue = params;
+        this.recordId = queryParamValue.id;
+        this.contactname = queryParamValue.name;
       });
   }
   makePayment() {
     if (this.amountForm.invalid) {
       return;
     }
-    this.route.navigate(['/dashboard/donate/payment'], { queryParams: { amount: this.amountForm.value.amount, id: 112 } });
+    this.route.navigate(['/dashboard/donate/payment'], { queryParams: { amount: this.amountForm.value.amount, id: this.recordId } });
   }
 }

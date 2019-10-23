@@ -36,6 +36,7 @@ import { ProfilePageComponent } from './profile/profile-page/profile-page.compon
 import { CustomButtonComponent } from './custom-button/custom-button.component';
 import { createCustomElement } from '@angular/elements';
 import { CustomAppComponent } from './custom-app/custom-app.component';
+import {CardModule} from 'ngx-card/ngx-card';
 
 
 
@@ -60,6 +61,7 @@ import { CustomAppComponent } from './custom-app/custom-app.component';
     ReactiveFormsModule,
     HttpClientModule,
     FlexLayoutModule,
+    CardModule,
     BrowserAnimationsModule,
     AppMaterialModule,
     ProfileModule,

@@ -42,7 +42,7 @@
         </ng-container>
         <ng-container matColumnDef="Contribute">
             <mat-header-cell *matHeaderCellDef>Contribute</mat-header-cell>
-            <mat-cell *matCellDef="let row"><a routerLink="/dashboard/donate" [queryParams]="{ order: row}">Donate</a></mat-cell>
+            <mat-cell *matCellDef="let row"><a routerLink="/dashboard/donate" [queryParams]="{ name: row.fullname, id: row.recordId}">Donate</a></mat-cell>
         </ng-container>
         <ng-container matColumnDef="loading">
             <mat-header-cell *matFooterCellDef colspan="6">
